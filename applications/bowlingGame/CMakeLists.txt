@@ -1,8 +1,3 @@
-#[=[
-@file BowlingGame Cmake
-@author Mohamed Lamine Ben Hassine
-@mail mohamed-ben-hassine@mailfence.com
-]=]
 project(BowlingGame LANGUAGES CXX)
 set(PROJECT_LIST)
 
