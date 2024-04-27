@@ -30,12 +30,12 @@ class gamebox_test: public ::testing::Test {
 
 TEST_F(gamebox_test, roll_all_zeros) {
     roll_n_times(20,0);
-    auto result = bowlingGame->get_score();
+    auto result = bowlingGame->score();
     EXPECT_EQ(result, 0);
 }
 TEST_F(gamebox_test, roll_all_ones) {
     roll_n_times(20,1);
-    auto result = bowlingGame->get_score();
+    auto result = bowlingGame->score();
     EXPECT_EQ(result, 20);
 }
 TEST_F(gamebox_test, roll_a_spare) {
@@ -43,12 +43,12 @@ TEST_F(gamebox_test, roll_a_spare) {
     bowlingGame->roll(5);
     bowlingGame->roll(6);
     roll_n_times(17,0);
-    EXPECT_EQ(22,bowlingGame->get_score());
+    EXPECT_EQ(22,bowlingGame->score());
 }
 TEST_F(gamebox_test, roll_a_perfect_game) {
 
     roll_n_times(12,10);
-    EXPECT_EQ(300,bowlingGame->get_score());
+    EXPECT_EQ(300,bowlingGame->score());
 }
 TEST_F(gamebox_test, play_a_normal_game) {
     bowlingGame->roll(5);// 0 | score 5
@@ -60,7 +60,7 @@ TEST_F(gamebox_test, play_a_normal_game) {
     bowlingGame->roll(4);// 8 and 9 | score 68
     roll_n_times(11,0);
     // result should be 68
-    EXPECT_EQ(68,bowlingGame->get_score());
+    EXPECT_EQ(68,bowlingGame->score());
 }
 TEST_F(gamebox_test, isOver_returns_true) {
     roll_n_times(20,0);
@@ -95,17 +95,17 @@ TEST_F(gamebox_test, isOver_returns_true_strike) {
 }
 TEST_F(gamebox_test, frame_score) {
     roll_n_times(4,10);
-    EXPECT_EQ(60,bowlingGame->get_frame_score(1));
-    EXPECT_EQ(90,bowlingGame->get_frame_score(9));
+    EXPECT_EQ(60,bowlingGame->getFrameScore(1));
+    EXPECT_EQ(90,bowlingGame->getFrameScore(9));
 }   
 TEST_F(gamebox_test, frame_score_perfect_game) {
     roll_n_times(12,10);
-    EXPECT_EQ(300,bowlingGame->get_frame_score(9));
+    EXPECT_EQ(300,bowlingGame->getFrameScore(9));
 }   
 
 TEST_F(gamebox_test, frame_score_reset_game) {
     bowlingGame->roll(10);
     bowlingGame->roll(10);
     bowlingGame->reset();
-    EXPECT_EQ(0,bowlingGame->get_frame_score(9));
+    EXPECT_EQ(0,bowlingGame->getFrameScore(9));
 }   

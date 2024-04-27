@@ -1,10 +1,4 @@
 #include "bowlingScreen.h"
-#include <iomanip>
-#include <sstream>
-#include <iostream>
-#include <string>
-#include <vector>
-#include <math.h>
 #include <algorithm>
 namespace dbg {
     auto print(std::string message) -> void {std::cout << message <<"\n";}
@@ -86,12 +80,12 @@ namespace {
 // Screen class implementation
 ////////////////////////////////////////////////////////////////
 Console::Screen::Screen(std::shared_ptr<Bowlingbox> g) { 
-    game   = g;
+    _game   = g;
     //frames = std::vector<Frame>(10);
     for(auto i = 0; i < 9; i++) {
-        frames.push_back(Frame());
+        _frames.push_back(Frame());
     }
-    frames.push_back(Frame(Frame::Type::Last));
+    _frames.push_back(Frame(Frame::Type::Last));
 }
 
 bool Console::Screen::clearScreen()
@@ -120,8 +114,8 @@ int Console::Screen::getConsoleWidth(){
 }
 
 void Console::Screen::updateGrid() {
-    auto rolls  = game->rolls();
-    auto scores = game->scores();
+    auto rolls  = _game->rolls();
+    auto scores = _game->scores();
 
     int first,second,score,last =(int)Frame::Bonus::None;
 
@@ -133,7 +127,7 @@ void Console::Screen::updateGrid() {
         if(frame_index == 9) 
              last    = rolls[2*frame_index + 2];
 
-        frames[frame_index].setFrame(score, 
+        _frames[frame_index].setFrame(score, 
                          first, second, last);  
     }
 }
@@ -174,13 +168,13 @@ void Console::Screen::plotGrid() {
     //first we need to know the width of the screen
     int width       = getConsoleWidth();
     //then we need to know the number of frames to be plotted
-    int frameSize   = frames.size();
-    int frameHeight = frames[0].getFrame().size();
+    int frameSize   = _frames.size();
+    int frameHeight = _frames[0].getFrame().size();
     //fix the index of the last frame just for readability proposal
     int lastIndex   = frameSize - 1;
     // then we need to know the width of each frame
-    int last_width  = frames[lastIndex].getFrame()[0].length();
-    int unit_width  = frames[0].getFrame()[0].length() + 1; // plus 1 for the spacer;
+    int last_width  = _frames[lastIndex].getFrame()[0].length();
+    int unit_width  = _frames[0].getFrame()[0].length() + 1; // plus 1 for the spacer;
 
     //then we need to know the number of regular units can be plotted 
     // in the screen at the same line other than the last frame.
@@ -220,7 +214,7 @@ void Console::Screen::plotGrid() {
         //load the frames line by line,       
         for(auto  j = 0; j < stop; j++) {
              for(auto k = 0; k < frameHeight; k++) 
-                lines[k] += spacer + frames[frameIndex].getFrame()[k];
+                lines[k] += spacer + _frames[frameIndex].getFrame()[k];
             //increase the index to move to the next frame
             frameIndex++;
         }   
@@ -230,153 +224,165 @@ void Console::Screen::plotGrid() {
         }     
     }   
 }
+
+void Console::Screen::plotMenu(){
+    std::string spacer = " ";
+    std::string message= "";
+    // add static choices
+    std::vector<std::string> 
+    choices = {"q - quit"};
+    dbg::print(_lastMessage);
+
+     if(isGame()) {
+        message += "Enter a number between 0 and " 
+                           + std::to_string(_game->pinsLeft()) + "\n";                
+        message += "or the letter: ";
+
+        choices.push_back("r - restart");
+    } else {
+        message += "Select a choice:\n";
+
+        choices.push_back("p - play");
+
+        if(!isTryStart()) 
+            setStatus(Status::TryStart);
+    }
+       
+    // append the choices
+    for(auto choice : choices) { 
+        message += spacer + choice;
+    }
+    dbg::print(message +" to continue...");      
+}
+
+void Console::Screen::evaluate(){ 
+    std::string choice{};
+    std::getline(std::cin, choice);
+
+    _lastMessage = "Your choice: "+ choice + "\n"; 
+
+    auto maxPins     = _game->pinsLeft();
+       
+    if(choice == "q") {
+        setStatus(Status::Quit); 
+        return;   
+    } else 
+    if(choice == "p" || choice == "r") {
+        resetGame();
+        setStatus(Status::Started);
+        return;
+    }
+
+    if(isGame()){// the game is already started or running
+        if (isNumber(choice) ) {
+
+            int pins = std::stoi(choice);
+
+            if(pins >= 0 && pins <= maxPins) { // in interval
+
+                _game->roll(pins);
+
+                if(_game->isOver()) // check the game if it s over set an end
+                    setStatus(Status::End);    
+                else                // else keep running
+                    setStatus(Status::Running);
+            } 
+            else setStatus(Status::Typo);
+            
+        } 
+        else setStatus(Status::Typo);
+            
+    } 
+    else setStatus(Status::TryStart); 
+}
+
 void Console::Screen::start(){
-    while(status != Status::Quit) {
-        // output
+    setStatus(Status::FristStart);
+    while(!isExit()) {
         plotIntro();
-
         plotGrid();
-
         plotMenu();
-        // input
-        std::string choice{};
-        std::getline(std::cin, choice);
-        evaluate(choice); 
-        
-        if(isExit() || isRunning()) continue;
-        dbg::print("Enter any key to continue...\n");
-        std::getline(std::cin, choice);
-        // if q close the program
+        evaluate(); 
     }
 }
 void Console::Screen::resetGame()
 {
-    for (auto& frame : frames) 
+    for (auto& frame : _frames) 
         frame.resetFrame();
-    game->reset();
+    _game->reset();
 }
-void Console::Screen::evaluate(const std::string& choice)
+
+void Console::Screen::setStatus(Status current_status)
 {
-    auto message     = std::string();   
-    auto maxPins     = game->pinsLeft();
-    auto beforeStart = isTryStart();
-    auto running     = isRunning() || isTypo();
-    auto play        = beforeStart ? "p" :"r";
- 
-
-    auto messageBeforeStart ="Invalid starting choice: " + choice 
-                                + "\nPlease select a letter (q to exit or "+ play +" to play) to continue\n";
-   
-    auto messageRollingError = "Invalid rolling choice: " + choice  
-                                + "\nPlease select a number between 0 and" + std::to_string(maxPins) + "\n";
-
-    auto messageAfterStartError = messageRollingError + ", or a letter (q to exit or "+ play +" to play\n";
-
-    if(isFirstStart()) return; // error evaluate should not be called if is first start but try start
-
-    if(choice == "q") {
-        status = Status::Quit;
-        return;    
-    } else 
-    if(choice == play) {
-        if(running)
-            resetGame();
-        dbg::print("reset");
-        status = Status::Running;
-        return;
+    _status = current_status;
+    switch(_status) {
+        case Status::End: 
+          _lastMessage = "Game Over!\t You have scored: "
+                + std::to_string(_game->score()) +"\n";
+          break;
+        case Status::Running:
+          _lastMessage = "You have scored: "
+                + std::to_string(_game->score()) +"\n";
+          break; 
+        case Status::FristStart:
+          _lastMessage = "Welcome to the Bowling Game!";
+          break;
+        case Status::Started: 
+          _lastMessage = "New game started! Good Luck!";
+          break;
+        case Status::TryStart:
+          _lastMessage = "starting ";
+          break;
+        
+        case Status::Typo:
+        default:
+          _lastMessage += "Invalid choice!";
+          break;
     }
-
-    if(!beforeStart){
-        if (isNumber(choice) ) {
-            int pins = std::stoi(choice);
-            if(pins >= 0 && pins <= maxPins) {
-                game->roll(pins);
-                status  = Status::Running;
-                return;
-            } else {
-                message = messageRollingError;
-                status  = Status::Typo;
-            }
-        } else {
-                message = messageAfterStartError;
-                status  = Status::Typo;
-            }
-    } else {
-        message = messageBeforeStart;
-        status  = Status::TryStart;
-    }
-    dbg::print(message);
-}
-void Console::Screen::plotMenu(){
-    std::string spacer = " ";
-    std::string message= "";
-    auto gameOver = game->isOver();
-    
-    if(gameOver) {
-        status  = Status::End;
-        message = "Game Over!\n You have scored: "
-                + std::to_string(game->get_score()) +"\n";
-    }
-    if(isRunning()){
-         message = "You have scored: "
-                + std::to_string(game->get_score()) +"\n";
-    }
-
-    auto no_play = isEndGame() || isFirstStart();
-    auto beforeStart = no_play || isTryStart();
-    
-    // add static choices
-    std::vector<std::string> choices = {"q - quit"};
-    // add the dynamic choices
-    choices.push_back(beforeStart ? "p - play" : "r - restart");
-    
-    // start the select menu
-    message += "Select a choice:\n";
-    // append the choices
-    for(auto choice: choices) { 
-        message += spacer + choice;
-    }
-    if(!beforeStart) {
-        message += spacer + "or enter a number between 0 and " 
-                           + std::to_string(game->pinsLeft());
-    }
-    dbg::print(message);
-    if(isFirstStart())
-        status = Status::TryStart;
 }
 
 bool Console::Screen::isEndGame()
 {
-    return Status::End == status;
+    return Status::End == _status;
 }
 bool Console::Screen::isExit() {
-    return Status::Quit == status;
+    return Status::Quit == _status;
 }
 
 bool Console::Screen::isRunning()
 {
-    return Status::Running == status;
+    return Status::Running == _status;
 }
 
 bool Console::Screen::isTryStart()
 {
-    return Status::TryStart == status;
+    return Status::TryStart == _status;
+}
+
+bool Console::Screen::isStarted()
+{
+    return Status::Started == _status;
 }
 
 bool Console::Screen::isFirstStart()
 {
-    return Status::FristStart == status;
+    return Status::FristStart == _status;
 }
 
 bool Console::Screen::isTypo()
 {
-    return Status::Typo == status;
+    return Status::Typo == _status;
+}
+
+bool Console::Screen::isGame()
+{
+    return isRunning() || isStarted() || isTypo();
 }
 
 ////////////////////////////////////////////////////////////////
 // Frame struct implementation
 ////////////////////////////////////////////////////////////////
-Console::Frame::Frame(Type t): type(t) {
+Console::Frame::Frame(Type t): _type(t) {
     _frame = std::vector<std::string>(5, "   ");
     resetFrame();
 }
@@ -410,7 +416,7 @@ void Console::Frame::updateRolls() {
     // prepare the right side of the frame by the second roll
     auto rightSide  = middleEdge + _secondRoll;
     // evaluate if it is the last frame then support a 3rd roll
-    if(type == Type::Last)
+    if(_type == Type::Last)
          rightSide += middleEdge + _lastRoll;
     //append the right side and the edge to the frame line
     _frame[1] +=  rightSide + rightEdge;
@@ -420,7 +426,7 @@ void Console::Frame::updateScore() {
     std::string leftedge  = "|    ", 
                 rightedge = "    |";
 
-    if(type == Type::Last) { 
+    if(_type == Type::Last) { 
         //inlarge the edges for the last frame 
         leftedge += "   " ; 
         rightedge = "   " + rightedge;
@@ -434,7 +440,7 @@ void Console::Frame::resetFrame() {
     _secondRoll ="   ";
     _lastRoll   ="   ";
     _framescore ="   ";
-    switch (type)
+    switch (_type)
     {
     case Type::Regular: {
         //regular frame
@@ -457,14 +463,14 @@ void Console::Frame::resetFrame() {
     }
 }
 
-void Console::Frame::setFrame(const int& frame_score,
-                              const int& first_roll, 
-                              const int& second_roll, 
-                              const int& last_roll){
-    setRoll(Order::First, first_roll);
-    setRoll(Order::Second, second_roll);
-    setRoll(Order::Last, last_roll);
-    setScore(frame_score);
+void Console::Frame::setFrame(const int& frameScore,
+                              const int& firstRoll, 
+                              const int& secondRoll, 
+                              const int& lastRoll){
+    setRoll(Order::First, firstRoll);
+    setRoll(Order::Second, secondRoll);
+    setRoll(Order::Last, lastRoll);
+    setScore(frameScore);
 }
 
 

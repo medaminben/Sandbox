@@ -29,7 +29,7 @@ namespace Sandbox {
          */
         Bowlingbox::Bowlingbox() {
             // Initialize a unique pointer to a BowlingSet object
-            gameSet = std::make_unique<BowlingSet>();
+            _gameSet = std::make_unique<BowlingSet>();
         }
 
         Bowlingbox::~Bowlingbox(){
@@ -45,7 +45,7 @@ namespace Sandbox {
          */
         void Bowlingbox::roll(const int& pins){
             // Pass the number of pins rolled to the BowlingSet object to update the game state
-            gameSet->roll(pins);
+            _gameSet->roll(pins);
         }
 
         /**
@@ -56,26 +56,26 @@ namespace Sandbox {
          *
          * @return The current score of the bowling game.
          */
-        int Bowlingbox::get_score(){
+        int Bowlingbox::score(){
             // Call the `score()` method of the `BowlingSet` object and return the result
-            return gameSet->score();
+            return _gameSet->score();
         }
          
         int* Bowlingbox::rolls() {
-            return gameSet->rolls();
+            return _gameSet->rolls();
         }
 
         int* Bowlingbox::scores(){
-            return gameSet->scores();
+            return _gameSet->scores();
         }
 
         int Bowlingbox::pinsLeft()
         {
-            return gameSet->pinsLeft();
+            return _gameSet->pinsLeft();
         }
-        int Bowlingbox::get_frame_score(const int &frameIndex)
+        int Bowlingbox::getFrameScore(const int &frameIndex)
         {
-            return gameSet->frameScore(frameIndex);
+            return _gameSet->frameScore(frameIndex);
         }
         /**
          * @brief Resets the bowling game to its initial state.
@@ -85,20 +85,20 @@ namespace Sandbox {
          */
         void Bowlingbox::reset(){
             // Call the `reset()` method of the `BowlingSet` object to reset the game state
-            gameSet->reset();
+            _gameSet->reset();
         }
         
         bool Bowlingbox::isOver()
         {
-            return gameSet->isOver();
+            return _gameSet->isOver();
         }
 
         bool Bowlingbox::isStrike(const int & index)
         {
-            return gameSet->isStrike(index);
+            return _gameSet->isStrike(index);
         }
         bool Bowlingbox::isSpare(const int & index) {
-            return gameSet->isStrike(index);        
+            return _gameSet->isStrike(index);        
         }
     }
 }
