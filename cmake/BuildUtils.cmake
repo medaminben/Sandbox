@@ -90,26 +90,33 @@ endif()
 ###############################################################
 # now add library 
 ###############################################################
+
 add_library(${LIBRARY_NAME_RAW} ${parameter_LIB_FILES})
 
 # create a dummy library aliasing the raw name
 add_library(${LIBRARY_NAME} ALIAS ${LIBRARY_NAME_RAW})
 
+include(GenerateExportHeader)
+string(TOUPPER ${CMAKE_ROOT_NAME} API_FLAG)
+#add_definitions(-DMAKE_${API_FLAG} )
+print(parameter_LIB_FILES)
+generate_export_header(${LIBRARY_NAME_RAW}
+                       EXPORT_FILE_NAME "${CMAKE_CURRENT_SOURCE_DIR}/include//${CMAKE_ROOT_NAME}/${parameter_LIB_NAME}/${CMAKE_ROOT_NAME}_export.h"
+                       EXPORT_MACRO_NAME ${API_FLAG}_API
+                       BASE_NAME ${API_FLAG}
+                       DEFINE_NO_DEPRECATED)
+                       #NO_EXPORT_MACRO_NAME ${API_FLAG}_API)
 ###############################################################
 # Manage compiler Flags
 ###############################################################
-string(TOUPPER ${CMAKE_ROOT_NAME} LIB_FLAG)
+
 # This is used in build with MSVC an export flag must be set  
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set(compiler_id 1)
 else()
     set(compiler_id 0)
 endif()
-target_compile_definitions(${LIBRARY_NAME_RAW} 
-        PRIVATE 
-        COMPILER_ID=1 # needed for export
-        MAKE_${LIB_FLAG}
-    )
+
 
 ###############################################################
 # linking
@@ -217,9 +224,7 @@ function(create_application)
     # link the executable
     #
     target_link_libraries(${app_NAME} PRIVATE ${app_DEPENDENCIES})
-   # else()
-       # message(STATUS " >>> ${app_NAME} has no dependencies")
-    #endif()
+   
     
     if(app_ENTRY STREQUAL "QT_ui")
         set_target_properties(${app_NAME} 
