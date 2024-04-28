@@ -99,3 +99,6 @@ luac.out
 
 #vscode
 .vscode
+
+#export 
+*_export.h
