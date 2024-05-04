@@ -3,27 +3,23 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <cstdlib>
-#ifdef WIN32
-#include <windows.h>
-#else
-#include <sys/ioctl.h>
-#endif
-#include <unistd.h>
+
 #include <memory>
 
 
 #include <Sandbox/Gamebox/Gamebox.h>
 
 using namespace Sandbox::Gamebox;
-using namespace std;
 
 namespace Console{
     class Frame;
+
     class Screen {
         public:
             Screen(std::shared_ptr<Bowlingbox>);
+            void SetUp();
             void start();
+
         protected:
             enum class Status {
                         FristStart   = 0,
@@ -43,20 +39,22 @@ namespace Console{
             bool isTypo();
             bool isGame();
 
-            bool clearScreen();
-            int  getConsoleWidth();
             void updateGrid();
-            void plotIntro();
-            void plotGrid();
             void resetGame();
-            void evaluate();
+
+            void plotIntr();
+            void plotGrid();
             void plotMenu();
+            void evaluate();
             void setStatus(Status);
 
             std::shared_ptr<Bowlingbox> _game{nullptr};
             std::vector<Frame> _frames{};
             Status _status{Status::FristStart};
             std::string _lastMessage{};
+
+            int  getConsoleWidth();
+            bool clearScreen();
     };
     
     class Frame{

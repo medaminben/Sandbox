@@ -1,12 +1,10 @@
-
+// #include <myproject/xyz/header.h>
 // Include local private headers using quotes and path relative to the
 // current file
 #include "Gamebox_impl.h"
-
 // Include public headers of the current or other target within this
 // project with path relative to the "include" directory
 #include <Sandbox/Gamebox/Gamebox.h>
-// #include <myproject/xyz/header.h>
 
 // Include 3rd party headers with brackets
 // #include <xyz>

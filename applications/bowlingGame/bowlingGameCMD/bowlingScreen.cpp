@@ -1,126 +1,45 @@
 #include "bowlingScreen.h"
-#include <algorithm>
-namespace dbg {
-    auto print(std::string message) -> void {std::cout << message <<"\n";}
-}
-namespace {
-    /// @brief  convert int to a 3 chars string 
-    /// @param i int to convert, pins number or score
-    /// @return 
-    std::string toConsole(const int& i){
-        //convert to string
-        auto i_str = std::to_string(i);
-        // format to 3 chars string
-        switch (i_str.length())
-        {
-            // one digit number
-            case 1:  return " " + i_str + " "; 
-            case 2:  return " " + i_str; 
-            default: return       i_str;
-        }
-    }
-    /// @brief convert value to string for console
-    /// @param value eather pins number, bonus case or score. 
-    /// the game states are tolerates as negative numbers see
-    /// @enum Gamebox::Bowlingbox::Bonus
-    /// @return a 3 chars string of the value 
-    std::string valueToConsole(const int& value){
-        // the highest number is equal to the
-        // maximum score that can be achieved
-        // which is 300, so any higher number
-        // is wrong input
-        if(value / 1000 > 1) return "   ";
-        // extract corner caeses: game states
-        switch (value)
-        {
-        case -3: // not set
-            return "   ";
-        case -2: // strike
-            return " X " ;
-        case -1: // spare
-            return " / ";        
-        default:// numbers call toConsole
-            return toConsole(value);
-        }
-    }
-    std::string generateBar(const int& length, const std::string& stone, bool with_return = true) {
-        std::string bar = "";
-        for (int i = 0; i < length-1; i++)
-                bar += stone;
-        if (with_return)
-            return bar + "\n";
-        return bar;
-    }
-    std::string formatTitle(const int& length, const std::string& title) {
-        std::string space = " ",new_line = "\n" ,colomn = "|";
-
-        int space_length =  (length - title.length() -1) / 2;
-        std::string spacer = generateBar(space_length,space,false);
-        return  spacer + title + spacer + new_line;
-    }
-    std::string giveAbout(std::string author_name){
-        std::string about = "=About=\n Made by: "; 
-        return about + author_name + "\n";
-    }
-    
-    /// @brief check if string contains only digits
-    /// @param str the string
-    /// @return true if the string contains only digits
-    bool isNumber(const std::string& str) {
-        // fast return if empty
-        if(str.empty()) return false;
-        // check if all digits
-        return std::find_if( 
-            str.begin(), str.end(), [](unsigned char c) {
-                                return !std::isdigit(c);} ) == str.end();
-    }
-}
-
+#include "screenTools.h"
+#ifdef WIN32
+#include <windows.h>
+#else
+#include <sys/ioctl.h>
+#endif
+#include <cstdlib>
+#include <unistd.h>
 ////////////////////////////////////////////////////////////////
 // Screen class implementation
 ////////////////////////////////////////////////////////////////
-Console::Screen::Screen(std::shared_ptr<Bowlingbox> g) { 
+Console::Screen::Screen(std::shared_ptr<Bowlingbox> g){ 
     _game   = g;
-    //frames = std::vector<Frame>(10);
+    SetUp();
+}
+void Console::Screen::SetUp(){
+     //frames = std::vector<Frame>(10);
     for(auto i = 0; i < 9; i++) {
         _frames.push_back(Frame());
     }
     _frames.push_back(Frame(Frame::Type::Last));
 }
 
-bool Console::Screen::clearScreen()
-{
-#ifdef _WIN32
-     // Clear the console screen
-    system("cls"); // For Windows
-#elif 
-     // Clear the console screen
-    system("clear"); // For Linux/Mac
-#endif// WIN32
-    return true;
+void Console::Screen::start(){
+    setStatus(Status::FristStart);
+    while(!isExit()) {
+        plotIntr();
+        plotGrid();
+        plotMenu();
+        evaluate(); 
+    }
 }
 
-int Console::Screen::getConsoleWidth(){
-#ifdef WIN32
-    // Get the width of the console screen
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-    return csbi.srWindow.Right - csbi.srWindow.Left + 1;
-#else
-    struct winsize size;
-    ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
-    return size.ws_col;
-#endif // WIN32
-}
-
-void Console::Screen::updateGrid() {
+void Console::Screen::updateGrid(){
     auto rolls  = _game->rolls();
     auto scores = _game->scores();
 
     int first,second,score,last =(int)Frame::Bonus::None;
-
     for (auto frame_index = 0; 
               frame_index < 10; frame_index+=1) {
+                	
         first   = rolls[2*frame_index];
         second  = rolls[2*frame_index + 1];
         score   = scores[frame_index];
@@ -132,26 +51,26 @@ void Console::Screen::updateGrid() {
     }
 }
 
-void Console::Screen::plotIntro(){
+void Console::Screen::plotIntr(){
    if(clearScreen()){
         std::string hash_stone = "#",
                     wave_stone = "~",
                     spacer     = " ", 
                     new_line   = "\n";
 
-        int width = Screen::getConsoleWidth();
+        int width = getConsoleWidth();
         
-        std::string title = formatTitle(width, 
+        std::string title = ScreenTools::formatTitle(width, 
                     "Execution of BowlingGame from Gamebox Library");
 
         std::string introduction = 
             "This console game is an interface to the bowling game implemented under the Gamebox library.";
         
-        std::string about = giveAbout("github.com/medaminben");
+        std::string about = ScreenTools::giveAbout("github.com/medaminben");
 
         // create a bars
-        std::string hash_bar = generateBar(width, hash_stone);
-        std::string wave_bar = generateBar(width, wave_stone);
+        std::string hash_bar = ScreenTools::generateBar(width, hash_stone);
+        std::string wave_bar = ScreenTools::generateBar(width, wave_stone);
         // bundle all together in a banner
         std::string banner = 
             hash_bar + title + hash_bar + introduction 
@@ -161,7 +80,7 @@ void Console::Screen::plotIntro(){
     }
 }
 
-void Console::Screen::plotGrid() {
+void Console::Screen::plotGrid(){
     //refresh data
     updateGrid() ;
     auto spacer     =  " "; 
@@ -231,7 +150,7 @@ void Console::Screen::plotMenu(){
     // add static choices
     std::vector<std::string> 
     choices = {"q - quit"};
-    dbg::print(_lastMessage);
+    ScreenTools::print(_lastMessage);
 
      if(isGame()) {
         message += "Enter a number between 0 and " 
@@ -252,7 +171,7 @@ void Console::Screen::plotMenu(){
     for(auto choice : choices) { 
         message += spacer + choice;
     }
-    dbg::print(message +" to continue...");      
+    ScreenTools::print(message +" to continue...");      
 }
 
 void Console::Screen::evaluate(){ 
@@ -274,7 +193,7 @@ void Console::Screen::evaluate(){
     }
 
     if(isGame()){// the game is already started or running
-        if (isNumber(choice) ) {
+        if (ScreenTools::isNumber(choice) ) {
 
             int pins = std::stoi(choice);
 
@@ -296,24 +215,20 @@ void Console::Screen::evaluate(){
     else setStatus(Status::TryStart); 
 }
 
-void Console::Screen::start(){
-    setStatus(Status::FristStart);
-    while(!isExit()) {
-        plotIntro();
-        plotGrid();
-        plotMenu();
-        evaluate(); 
+void Console::Screen::resetGame(){ 
+    //frames = std::vector<Frame>(10);
+    _frames.clear();
+    for(auto i = 0; i < 9; i++) {
+        _frames.push_back(Frame());
     }
-}
-void Console::Screen::resetGame()
-{
-    for (auto& frame : _frames) 
-        frame.resetFrame();
+    _frames.push_back(Frame(Frame::Type::Last));
+    // for (auto& frame : _frames) 
+    //     frame.resetFrame();
     _game->reset();
 }
 
-void Console::Screen::setStatus(Status current_status)
-{
+//### Status setter
+void Console::Screen::setStatus(Status current_status){
     _status = current_status;
     switch(_status) {
         case Status::End: 
@@ -333,62 +248,77 @@ void Console::Screen::setStatus(Status current_status)
         case Status::TryStart:
           _lastMessage = "starting ";
           break;
-        
         case Status::Typo:
         default:
           _lastMessage += "Invalid choice!";
           break;
     }
 }
-
-bool Console::Screen::isEndGame()
-{
+int Console::Screen::getConsoleWidth(){
+#ifdef WIN32
+        // Get the width of the console screen
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+        return csbi.srWindow.Right - csbi.srWindow.Left + 1;
+#else
+        struct winsize size;
+        ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
+        return size.ws_col;
+#endif // WIN32
+}
+bool Console::Screen::clearScreen(){
+#ifdef _WIN32
+        // Clear the console screen
+        system("cls"); // For Windows
+#elif 
+        // Clear the console screen
+        system("clear"); // For Linux/Mac
+#endif// WIN32
+        return true;
+}
+// ### Status getters
+bool Console::Screen::isEndGame(){
     return Status::End == _status;
 }
-bool Console::Screen::isExit() {
+
+bool Console::Screen::isExit(){
     return Status::Quit == _status;
 }
 
-bool Console::Screen::isRunning()
-{
+bool Console::Screen::isRunning(){
     return Status::Running == _status;
 }
 
-bool Console::Screen::isTryStart()
-{
+bool Console::Screen::isTryStart(){
     return Status::TryStart == _status;
 }
 
-bool Console::Screen::isStarted()
-{
+bool Console::Screen::isStarted(){
     return Status::Started == _status;
 }
 
-bool Console::Screen::isFirstStart()
-{
+bool Console::Screen::isFirstStart(){
     return Status::FristStart == _status;
 }
 
-bool Console::Screen::isTypo()
-{
+bool Console::Screen::isTypo(){
     return Status::Typo == _status;
 }
 
-bool Console::Screen::isGame()
-{
+bool Console::Screen::isGame(){
     return isRunning() || isStarted() || isTypo();
 }
 
 ////////////////////////////////////////////////////////////////
 // Frame struct implementation
 ////////////////////////////////////////////////////////////////
-Console::Frame::Frame(Type t): _type(t) {
+Console::Frame::Frame(Type t): _type(t){
     _frame = std::vector<std::string>(5, "   ");
     resetFrame();
 }
 
-void Console::Frame::setRoll(const Order& position, const int& value) {
-    std::string value_str = valueToConsole(value);
+void Console::Frame::setRoll(const Order& position, const int& value){
+    std::string value_str = ScreenTools::valueToConsole(value);
     switch (position)
     {
         case Order::First:  _firstRoll  = value_str; break;
@@ -398,8 +328,9 @@ void Console::Frame::setRoll(const Order& position, const int& value) {
     updateRolls();
 }
 
-void Console::Frame::setScore(const int & score) {
-    _framescore = valueToConsole(score);
+void Console::Frame::setScore(const int & score){
+    const bool isScore = true;
+    _framescore = ScreenTools::valueToConsole(score,isScore);
     updateScore();
 }
 
@@ -407,7 +338,7 @@ void Console::Frame::setScore(const int & score) {
     return _frame;
 }
 
-void Console::Frame::updateRolls() {
+void Console::Frame::updateRolls(){
     std::string leftEdge   =  "| ", 
                 rightEdge  = " |", 
                 middleEdge = " | ";
@@ -422,7 +353,7 @@ void Console::Frame::updateRolls() {
     _frame[1] +=  rightSide + rightEdge;
 }
 
-void Console::Frame::updateScore() {
+void Console::Frame::updateScore(){
     std::string leftedge  = "|    ", 
                 rightedge = "    |";
 
@@ -435,7 +366,28 @@ void Console::Frame::updateScore() {
     _frame[3] = leftedge + _framescore + rightedge;
 }
 
-void Console::Frame::resetFrame() {
+/**
+ * @brief updates the frame attributes and rebuild the frame structure  
+ * 
+ * @param frameScore 
+ * @param firstRoll 
+ * @param secondRoll 
+ * @param lastRoll 
+ */
+void Console::Frame::setFrame(const int& frameScore,
+                              const int& firstRoll, 
+                              const int& secondRoll, 
+                              const int& lastRoll){
+    setRoll(Order::First, firstRoll);
+    setRoll(Order::Second, secondRoll);
+    setRoll(Order::Last, lastRoll);
+    setScore(frameScore);
+}
+
+/**
+ * @brief the frame builder; it builds the basic structure of a frame
+ */
+void Console::Frame::resetFrame(){
     _firstRoll  ="   ";
     _secondRoll ="   ";
     _lastRoll   ="   ";
@@ -462,17 +414,6 @@ void Console::Frame::resetFrame() {
         break;
     }
 }
-
-void Console::Frame::setFrame(const int& frameScore,
-                              const int& firstRoll, 
-                              const int& secondRoll, 
-                              const int& lastRoll){
-    setRoll(Order::First, firstRoll);
-    setRoll(Order::Second, secondRoll);
-    setRoll(Order::Last, lastRoll);
-    setScore(frameScore);
-}
-
 
 
 
