@@ -99,7 +99,6 @@ add_library(${LIBRARY_NAME} ALIAS ${LIBRARY_NAME_RAW})
 include(GenerateExportHeader)
 string(TOUPPER ${CMAKE_ROOT_NAME} API_FLAG)
 #add_definitions(-DMAKE_${API_FLAG} )
-print(parameter_LIB_FILES)
 generate_export_header(${LIBRARY_NAME_RAW}
                        EXPORT_FILE_NAME "${CMAKE_CURRENT_SOURCE_DIR}/include//${CMAKE_ROOT_NAME}/${parameter_LIB_NAME}/${CMAKE_ROOT_NAME}_export.h"
                        EXPORT_MACRO_NAME ${API_FLAG}_API

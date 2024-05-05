@@ -34,7 +34,6 @@ if(CMAKE_COMPILER_IS_GNUCXX
 endif()
 
 if(BUILD_TESTING)
-    print(BUILD_TESTING)
     include(CTest)
     enable_testing()
     include(TestUtils)
