@@ -4,12 +4,10 @@ set(PROJECT_LIST)
 # add all the subprojects
 #################################################
 add_subdirectory(bowlingGameCMD)
-
+add_subdirectory(bowlingGameUI)
 #################################################
 # Build all the subprojects
 #################################################
-
-print(PROJECT_LIST)
 foreach(item IN LISTS PROJECT_LIST)
 
     if(BUILD_${item})
