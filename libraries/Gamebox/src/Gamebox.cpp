@@ -1,24 +1,8 @@
-// #include <myproject/xyz/header.h>
-// Include local private headers using quotes and path relative to the
-// current file
 #include "Gamebox_impl.h"
-// Include public headers of the current or other target within this
-// project with path relative to the "include" directory
 #include <Sandbox/Gamebox/Gamebox.h>
 
-// Include 3rd party headers with brackets
-// #include <xyz>
-
-// Include standard headers with brackets
-#include <iostream>
-
-
 namespace Sandbox {
-
     namespace Gamebox {
-
-
-
         /**
          * @brief Constructs a new Bowlingbox instance.
          *
@@ -67,12 +51,10 @@ namespace Sandbox {
             return _gameSet->scores();
         }
 
-        int Bowlingbox::pinsLeft()
-        {
+        int Bowlingbox::pinsLeft(){
             return _gameSet->pinsLeft();
         }
-        int Bowlingbox::getFrameScore(const int &frameIndex)
-        {
+        int Bowlingbox::getFrameScore(const int &frameIndex){
             return _gameSet->frameScore(frameIndex);
         }
         /**
@@ -86,17 +68,8 @@ namespace Sandbox {
             _gameSet->reset();
         }
         
-        bool Bowlingbox::isOver()
-        {
+        bool Bowlingbox::isOver(){
             return _gameSet->isOver();
-        }
-
-        bool Bowlingbox::isStrike(const int & index)
-        {
-            return _gameSet->isStrike(index);
-        }
-        bool Bowlingbox::isSpare(const int & index) {
-            return _gameSet->isStrike(index);        
         }
     }
 }

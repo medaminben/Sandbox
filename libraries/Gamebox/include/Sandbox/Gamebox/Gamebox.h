@@ -19,8 +19,6 @@ namespace Sandbox {
                 int  SANDBOX_API getFrameScore(const int&);
                 void SANDBOX_API reset();
                 bool SANDBOX_API isOver();
-                bool SANDBOX_API isStrike(const int&);
-                bool SANDBOX_API isSpare(const int&);
             private:
                 std::unique_ptr<BowlingSet> _gameSet;
         };
