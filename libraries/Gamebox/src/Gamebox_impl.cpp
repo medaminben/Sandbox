@@ -1,16 +1,5 @@
 #include "Gamebox_impl.h"
-#include <iostream>
 
-namespace {
-/* 
- * print
- * This function prints a message to the standard output.
- * @param message The message to be printed.
-//  */
-//     void print(std::string message){
-//         std::cout << message << std::endl;
-//     }
-}
 namespace Sandbox {
     namespace Gamebox {
         /**
@@ -23,9 +12,8 @@ namespace Sandbox {
          */
         bool BowlingSet::roll(const int& pins) {
             // Check if the game is over
-            if (isOver()) {
-                return false;
-            }
+            if (isOver()) return false;
+
             auto is_valide_roll = managePins(pins);
             // entry guard, not valide pins number return 
             if(!is_valide_roll) return false;
@@ -60,11 +48,11 @@ namespace Sandbox {
             _pinsLeft  = 10; 
         }
         /**
-         * @brief 
+         * @brief manages pins is an input guard for the roll function
          * 
-         * @param pins 
-         * @return true 
-         * @return false 
+         * @param pins number of pins down
+         * @return true  doable
+         * @return false input error
          */
         bool BowlingSet::managePins(const int &pins){
             // Strike or Spare
@@ -76,7 +64,12 @@ namespace Sandbox {
                 _pinsLeft -= pins;
             return true;
         }
-
+        /**
+         * @brief manages a cursor
+         * This transforms the roll index into a frame cursor
+         * It's needed to remap roll index with game frames 
+         * @return int the real cursor position in the frame grid
+         */
         int BowlingSet::manageCursor() {
             int cur =0;
             for (auto i= 0; i < _rollIndex; i++) {
@@ -89,12 +82,24 @@ namespace Sandbox {
             }
             return cur;
         }
+        /**
+         * @brief validates the roll 
+         * an adapter function that translate roll status to zero
+         * it s a helper for the manipulation of out_rolls
+         * @param value the roll as integer 
+         * @return int The real value inthe cell
+         */
         int BowlingSet::validateRoll(const int & value) {
             if (((int) Status::None == value) ||((int) Status::Empty == value))
                 return 0;
             return value;
         }
-
+        /**
+         * @brief serves the rolls as an array of 21 integers 
+         * the integers can be roll pins between 1 and 9 or a game status
+         * like None,Strike, Spare, Miss or Empty (see Status enum)
+         * @return int* a pointer to an array of 21 integers
+         */
         int *BowlingSet::rolls()  {
             static int out_rolls[21]; 
             int cur = 0, r = 0;
@@ -119,7 +124,6 @@ namespace Sandbox {
                                 out_rolls[cur] = (int) Status::Empty; 
                             } 
 
-                            
                         } else 
                             out_rolls[cur] = _rolls[r];
                         
@@ -143,12 +147,16 @@ namespace Sandbox {
                     }
                 }
                 else 
-                    out_rolls[cur] = (int) Status::None;
-                
+                    out_rolls[cur] = (int) Status::None;      
             }
             return out_rolls; 
         }
 
+        /**
+         * @brief serves the  frame scores as an array of 10 integers 
+         * 
+         * @return int*  a pointer to an array of 10 integers
+         */
         int *BowlingSet::scores() 
         {
             static int scores[10]; 
@@ -161,11 +169,21 @@ namespace Sandbox {
             return scores; 
         }
 
+        /**
+         * @brief backtracker of the pins befor rolling
+         * 
+         * @return int the number of pin left 
+         */
         int BowlingSet::pinsLeft() {
             return _pinsLeft;
         }
-
        
+        /**
+         * @brief Game status tracker
+         * 
+         * @return true  is game over
+         * @return false  the game is not over yet
+         */
         bool BowlingSet::isOver() {
             auto cur =  manageCursor(); 
             if (cur < 20) 
@@ -194,7 +212,7 @@ namespace Sandbox {
                 return _rolls[index] == 10;
         }
 
-        /**
+         /**
          * @brief Checks if the frame at the given index is a spare.
          *
          * This function checks if the frame at the given index is a spare by verifying
@@ -204,7 +222,7 @@ namespace Sandbox {
          * returns false.
          *
          * @param index The index of the frame to check.
-         * @return True if the frame is a spare, false otherwise.
+         * @return bool True if the frame is a spare, false otherwise.
          */
         bool BowlingSet::isSpare(const int& index) { 
             if(isMiss(index)) return false;
@@ -216,16 +234,42 @@ namespace Sandbox {
             // If the index is not valid return false too
             return false;
         }
+         /**
+         * @brief check if a value is an empty cell 
+         * 
+         * @param value  
+         * @return true if the value is empty
+         * @return false else
+         */
         bool BowlingSet::isEmpty(const int& index) { 
             return (int)Status::Empty == _rolls[index];
         }
+        /**
+         * @brief checks if a value is a miss
+         * 
+         * @param index 
+         * @return true 
+         * @return false 
+         */
         bool BowlingSet::isMiss(const int& index) { 
             return (int)Status::Miss == _rolls[index];
         }
+        /**
+         * @brief check if a value is not set
+         * 
+         * @param value 
+         * @return true 
+         * @return false 
+         */
         bool BowlingSet::isNone(const int & index) {
             return (int)Status::None == _rolls[index];
         }
-
+        /**
+         * @brief compute the score of a certain frame defined by its index
+         * 
+         * @param frameIndex the index of the needed fframe
+         * @return int the score
+         */
         int BowlingSet::frameScore(const int &frameIndex) {
             
             int cur = 0, score = 0;

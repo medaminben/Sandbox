@@ -19,26 +19,23 @@ namespace Sandbox {
             int* scores();
             int  pinsLeft();
             int  score();
-            bool isOver(); 
+            bool isOver();
+            int  frameScore(const int &); 
+        private:
             //helpers
             bool isStrike(const int&);
             bool isSpare(const int&);
             bool isEmpty(const int &);
             bool isMiss(const int &);
             bool isNone(const int &);
-            int  frameScore(const int &);
             bool managePins(const int&);
             int  manageCursor();
             int  validateRoll(const int &);
-            //states
         private:
             int _rolls[21];
-            int _rollIndex = 0;
-            int _pinsLeft  =10;
-            int _cursor    = 0; 
+            int _rollIndex =  0;
+            int _pinsLeft  = 10;
         };
-
     }
 }
-
 #endif //GAMEBOX_IMPL_H
