@@ -11,14 +11,14 @@ void PrintCommand::execute() const {
 
 
 
-void Reciever::ProcessA(const std::string &proc_a_stuff) {
-    std::cout << "Reciever is A working on: " << proc_a_stuff << '\n';
+void Receiver::ProcessA(const std::string &proc_a_stuff) {
+    std::cout << "Receiver is A working on: " << proc_a_stuff << '\n';
 }
-void Reciever::ProcessB(const std::string &proc_b_stuff) {
-    std::cout << "Reciever is B working on: " << proc_b_stuff << '\n';
+void Receiver::ProcessB(const std::string &proc_b_stuff) {
+    std::cout << "Receiver is B working on: " << proc_b_stuff << '\n';
 }
 
-BusinessCommand::BusinessCommand(Reciever*   reciever, 
+BusinessCommand::BusinessCommand(Receiver*   reciever, 
                                   const std::string& a, 
                                   const std::string& b) :
                  _reciever(reciever), _proc_a_details(a), 

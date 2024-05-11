@@ -29,7 +29,7 @@ public:
  * @brief the reciever is normally the consumer of the command order
  * somes call it component too 
  */
-class Reciever {
+class Receiver {
 public:
     void ProcessA(const std::string &);
     void ProcessB(const std::string &);
@@ -40,11 +40,11 @@ public:
  */
 class BusinessCommand : public ICommand {
 private: 
-    Reciever*   _reciever;
+    Receiver*   _reciever;
     std::string _proc_a_details;
     std::string _proc_b_details;
 public:
-    BusinessCommand(Reciever*, const std::string&, const std::string&);
+    BusinessCommand(Receiver*, const std::string&, const std::string&);
     void execute() const override;
 };
 

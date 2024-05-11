@@ -4,7 +4,7 @@ int main () {
     auto invoker       = new Invoker();
 
     auto firstCommand  = new PrintCommand("first Command");
-    auto secondCommand = new BusinessCommand(new Reciever(), "second Command", "Reciever Call");
+    auto secondCommand = new BusinessCommand(new Receiver(), "second Command", "Reciever Call");
     auto thirdCommand  = new PrintCommand("third Command");
     
     invoker->set_start_command(firstCommand);
