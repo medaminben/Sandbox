@@ -4,7 +4,7 @@ set(PROJECT_LIST)
 # add all the subprojects
 #################################################
 add_subdirectory(CommandPattern)
-
+add_subdirectory(StatePattern)
 #################################################
 # Build all the subprojects
 #################################################
