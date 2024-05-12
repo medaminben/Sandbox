@@ -3,12 +3,10 @@
 #include <iostream>
 
  PrintCommand::PrintCommand(const std::string& data) : _message(data) {
-
  }
 void PrintCommand::execute() const {
     std::cout << "command to print: " << _message << '\n';
 }
-
 
 
 void Receiver::ProcessA(const std::string &proc_a_stuff) {
