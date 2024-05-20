@@ -15,7 +15,7 @@ set(BUILD_${EXECUTABLE_NAME}
 )
 #executable type
 set(${EXECUTABLE_NAME}_ENTRY 
-    "QT_ui" 
+    QT_ui 
     PARENT_SCOPE
 )
 # Manage executable files

@@ -5,7 +5,7 @@
 #################################################
 # executable 
 #################################################
-set(EXECUTABLE_NAME StatePattern)
+set(EXECUTABLE_NAME State)
 set(EXEC_LIST)
 set(THIS_DIR ${CMAKE_CURRENT_LIST_DIR}) 
 
@@ -17,7 +17,7 @@ set(BUILD_${EXECUTABLE_NAME}
 )
 # executable type 
 set(${EXECUTABLE_NAME}_ENTRY 
-    "Console"
+    Console
     PARENT_SCOPE
 )
 
