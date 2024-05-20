@@ -1,1 +1,1 @@
-Naive example of [State Pattern](https://refactoring.guru/design-patterns/state)
+Naive example of [Observer Pattern](https://refactoring.guru/design-patterns/observer)
