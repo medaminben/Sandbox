@@ -6,6 +6,7 @@ set(PROJECT_LIST)
 add_subdirectory(CommandPattern)
 add_subdirectory(StatePattern)
 add_subdirectory(ObserverPattern)
+add_subdirectory(mvc_camera)
 #################################################
 # Build all the subprojects
 #################################################
