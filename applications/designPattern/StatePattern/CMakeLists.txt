@@ -5,7 +5,7 @@
 #################################################
 # executable 
 #################################################
-set(EXECUTABLE_NAME BowlingConsole)
+set(EXECUTABLE_NAME State)
 set(EXEC_LIST)
 set(THIS_DIR ${CMAKE_CURRENT_LIST_DIR}) 
 
@@ -23,16 +23,14 @@ set(${EXECUTABLE_NAME}_ENTRY
 
 # header files
 set(${EXECUTABLE_NAME}_HEADERS
-    ${THIS_DIR}/bowlingScreen.h
-    ${THIS_DIR}/screenTools.h
+    ${THIS_DIR}/State.h
     PARENT_SCOPE
 )
 
 # source files
 set(${EXECUTABLE_NAME}_SOURCES
-    ${THIS_DIR}/console.cpp
-    ${THIS_DIR}/bowlingScreen.cpp
-    ${THIS_DIR}/screenTools.cpp
+    ${THIS_DIR}/main.cpp
+    ${THIS_DIR}/State.cpp
     PARENT_SCOPE
 )
 
@@ -47,7 +45,6 @@ set(${EXECUTABLE_NAME}_RSC
 )
 # dependencies
 set(${EXECUTABLE_NAME}_DEPS 
-    ${CMAKE_ROOT_NAME}::Gamebox
     PARENT_SCOPE
 )
 # compile arguments

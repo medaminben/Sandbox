@@ -1,1 +1,2 @@
 add_subdirectory(bowlingGame)
+add_subdirectory(designPattern)
