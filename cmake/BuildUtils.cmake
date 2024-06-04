@@ -222,7 +222,9 @@ function(create_application)
     
     # link the executable
     #
-    target_link_libraries(${app_NAME} PRIVATE ${app_DEPENDENCIES})
+    if( DEFINED app_DEPENDENCIES OR NOT app_DEPENDENCIES STREQUAL "")
+        target_link_libraries(${app_NAME} PRIVATE ${app_DEPENDENCIES})
+    endif()
    
     
     if(app_ENTRY STREQUAL "QT_ui")
