@@ -1,1 +1,1 @@
-a naive implementation of the [Model View Controller Pattern](https://en.wikipedia.org/wiki/Model-view-controller)
+a naive implementation of the [Model View Controller Pattern](https://en.wikipedia.org/wiki/Model-view-controller/).
