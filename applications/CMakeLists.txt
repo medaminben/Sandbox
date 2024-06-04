@@ -1,2 +1,3 @@
 add_subdirectory(bowlingGame)
 add_subdirectory(designPattern)
+add_subdirectory(utilities)
