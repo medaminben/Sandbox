@@ -10,35 +10,7 @@
 
 typedef struct TeachPoint
 {	
-	std::string _device {""};
-	double      _distance{0.0};
-	uint32_t    _zoomAngle{0};
-	uint32_t    _focusPosition{0};
-	int8_t      _focusStep{0};
-	TeachPoint(const std::string &device,
-			   const std::string &distance,
-			   const std::string &zoomAngle,
-			   const std::string &focusPosition,
-			   const std::string &focusStep)
-	{
-		if(device.empty() || distance.empty() ||zoomAngle.empty() 
-			||focusPosition.empty() ||focusStep.empty() ) 
-					throw(std::invalid_argument("missing data"));			
-		_device = device;
-		try { 
-			std::string dis = distance;
-			if(dis.find_first_of(".") != std::string::npos)
-				dis.replace(dis.begin(), dis.end(), ',', '.');
-			_distance      = std::stod(dis);
-			_zoomAngle     = stol(zoomAngle, NULL, 32);
-			_focusPosition = stol(focusPosition, NULL, 32);
-			_focusStep     = (int8_t)(stoi(focusStep));
 
-		} catch(...){
-			throw(std::runtime_error("bad data"));
-		}
-		
-	}
 	TeachPoint(const std::vector<std::string>& dataTab)
 	{
 		if(dataTab.size() >= 5) {
@@ -66,7 +38,15 @@ typedef struct TeachPoint
 			}
 		}
 	}
+	std::string _device {""};
+	double      _distance{0.0};
+	uint32_t    _zoomAngle{0};
+	uint32_t    _focusPosition{0};
+	int8_t      _focusStep{0};
 } TeachPoint;
+
+
+
 int main()
 { 
 	const std::string myHeader = "Device;Distance;ZoomAngle;FocusPosition;FocusStep;";
@@ -85,7 +65,7 @@ int main()
 			std::vector<std::vector<std::string>> myDataSet;
 			while (!myFile.eof()){
 				std::string myRow;
-				getline(myFile, myRow);
+				std::getline(myFile, myRow);
 				std::vector<std::string> myDataString;
 				size_t pos = 0;
 				while ((pos = myRow.find(delimiter)) != std::string::npos) {
