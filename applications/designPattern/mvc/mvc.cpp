@@ -3,7 +3,7 @@
 /*
 the mvc architure follows a layer structure as in the graph
 
-              Vview <====> user
+               View <====> user
                 |A
                 ||
                 V|        
