@@ -10,4 +10,4 @@ namespace ${lib_ROOT_NAME} {
     }
 }
 
-#endif // ${lib_UP_NAME}_H
+#endif // ${lib_NAME_UPPER}_H
