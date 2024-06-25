@@ -3,9 +3,7 @@
 
 namespace Sandbox {
     namespace Core {
-         unsigned int get_the_answer_impl(void);
-
-        int multiply_impl(int , int );
+       
     }
 }
 #endif //CORE_IMPL_H

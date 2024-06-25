@@ -23,6 +23,20 @@ private:
 };
 namespace Sandbox {
     namespace Core {
+          /**
+         * @brief an error wrapper
+         * 
+         * @tparam E any movable error type 
+         */
+        template <typename E>
+        struct Error {
+        public:
+            constexpr Error(E error): _error(std::move(error)) {};  
+            constexpr auto&&  error()     { return std::move(_error); };
+            constexpr auto&& operator()() { return std::move(_error); };
+        protected:
+            E _error;
+        };
     }
 }
 namespace Sc = Sandbox::Core;
