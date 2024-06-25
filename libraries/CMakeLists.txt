@@ -6,7 +6,7 @@ add_subdirectory(Gamebox)
 ####################################
 include(libraryGenerator)
 
-set(LIBRARIES_LIST)
+set(LIBRARIES_LIST Core)
 
 set(lib_LOCATION ${CMAKE_SOURCE_DIR}/libraries)
 set(gen_DIR      ${CMAKE_SOURCE_DIR}/template)
