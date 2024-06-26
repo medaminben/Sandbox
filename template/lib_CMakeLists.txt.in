@@ -8,25 +8,25 @@ set(TST_DISCOVER ON)
 ###############################################################
 set(TARGET_HEADERS
     # private headers belong to "src"
-    src/${lib_NAME}_impl.h
+    src/${VAR_MARKER_START}TARGET_NAME${VAR_MARKER_END}_impl.h
     # Public headers belong in: include/CMAKE_ROOT_NAME/...
     # Other components and applications will add "include" 
     # to their search path, and need to use  the following 
     # kind of path: #include <CMAKE_ROOT_NAME/PROJECT_NAME/...>
-    include/${VAR_MARKER_START}CMAKE_ROOT_NAME${VAR_MARKER_END}/${lib_NAME}/${lib_NAME}.h
-    include/${VAR_MARKER_START}CMAKE_ROOT_NAME${VAR_MARKER_END}/${lib_NAME}/${VAR_MARKER_START}CMAKE_ROOT_NAME${VAR_MARKER_END}_export.h
+    include/${VAR_MARKER_START}CMAKE_ROOT_NAME${VAR_MARKER_END}/${VAR_MARKER_START}TARGET_NAME${VAR_MARKER_END}/${VAR_MARKER_START}TARGET_NAME${VAR_MARKER_END}.h
+    include/${VAR_MARKER_START}CMAKE_ROOT_NAME${VAR_MARKER_END}/${VAR_MARKER_START}TARGET_NAME${VAR_MARKER_END}/${VAR_MARKER_START}CMAKE_ROOT_NAME${VAR_MARKER_END}_export.h
 )
 
 set(TARGET_SOURCES
     # Source files belong in "src", 
     # they will never been seen or used by other components, 
-    src/${lib_NAME}.cpp
-    src/${lib_NAME}_impl.cpp
+    src/${VAR_MARKER_START}TARGET_NAME${VAR_MARKER_END}.cpp
+    src/${VAR_MARKER_START}TARGET_NAME${VAR_MARKER_END}_impl.cpp
 )
 
 set(TARGET_RSC
     # resources 
-    test/data/${lib_NAME}TestData.txt
+    test/data/${VAR_MARKER_START}TARGET_NAME${VAR_MARKER_END}TestData.txt
 )
 
 ##dependencies
@@ -46,7 +46,7 @@ set(TARGET_FILES
 set(TST_SOURCES
     # C++ files containing test cases should start with test_ 
     # to identify them more easily.
-    test/src/test_${lib_NAME}.cpp
+    test/src/test_${VAR_MARKER_START}TARGET_NAME${VAR_MARKER_END}.cpp
 )
 
 # Test dependencies other than the actual library
