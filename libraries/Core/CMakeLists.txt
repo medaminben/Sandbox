@@ -14,7 +14,6 @@ set(TARGET_HEADERS
     # to their search path, and need to use  the following 
     # kind of path: #include <CMAKE_ROOT_NAME/PROJECT_NAME/...>
     include/${CMAKE_ROOT_NAME}/Core/Core.h
-    include/${CMAKE_ROOT_NAME}/Core/${CMAKE_ROOT_NAME}_export.h
 )
 
 set(TARGET_SOURCES
