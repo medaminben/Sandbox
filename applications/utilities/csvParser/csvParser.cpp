@@ -7,7 +7,7 @@
 #include <string>
 #include <algorithm>
 #include <exception>
-
+#include <Sandbox/Tools/Tools.h>
 typedef struct TeachPoint
 {	
 
@@ -49,36 +49,25 @@ typedef struct TeachPoint
 
 int main()
 { 
-	const std::string myHeader = "Device;Distance;ZoomAngle;FocusPosition;FocusStep;";
-	const std::string delimiter = ";";
-	std::ifstream myFile("myCSVFile.csv");
-	if (!myFile.is_open()) 
-		std::cout << "ERROR\n" ;
-
 	std::vector<TeachPoint> teachMap;
-	if (!myFile.eof()) 
-	{
-		std::string aLine ="";
-		getline(myFile, aLine);
-		if (!myHeader.compare(aLine))
-		{
-			std::vector<std::vector<std::string>> myDataSet;
-			while (!myFile.eof()){
-				std::string myRow;
-				std::getline(myFile, myRow);
-				std::vector<std::string> myDataString;
-				size_t pos = 0;
-				while ((pos = myRow.find(delimiter)) != std::string::npos) {
-					myDataString.push_back(myRow.substr(0, pos));
-					myRow.erase(0, pos + delimiter.length());
-				}
-				if (myDataString.size() == 5) {
-					myDataSet.push_back(myDataString);
-					teachMap.push_back(TeachPoint(myDataString));
-				}
-			}
+
+	const std::string myHeader = "Device;Distance;ZoomAngle;FocusPosition;FocusStep;";
+	const std::string delimiter = ";";	
+	const auto file_name = "myCSVFile.csv";
+	try {
+		auto result = St::parse_csv_file(file_name, delimiter, myHeader);
+		if(result.isError()) {
+			std::cout << result.error() << "\n";
+			return -1;
 		}
+		for(const auto& row : result()) {
+			if (row.size() == 5) 
+					teachMap.push_back(TeachPoint(row));	
+		};
+	}catch(const Sc::SandException& ex) {
+		std::cout << ex.what() << "\n";
 	}
+   
 	std::string message{};
 	for(const auto & teachMap : teachMap) {
 		message = "Device: "                       + teachMap._device + 

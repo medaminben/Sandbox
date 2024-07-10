@@ -29,6 +29,7 @@ set(${EXECUTABLE_NAME}_RSC
 )
 # dependencies
 set(${EXECUTABLE_NAME}_DEPS
+    ${CMAKE_ROOT_NAME}::Tools
 )
 # compile arguments
 set(${EXECUTABLE_NAME}_BUILD_ARGS 
