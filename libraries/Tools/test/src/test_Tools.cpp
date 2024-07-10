@@ -14,16 +14,6 @@ namespace test_Tools {
 TEST (test_Tools_Result, get_proper_result) {
     const auto fp = test_Tools::data_dir + "csvFile.csv";
     auto res = St::parse_csv_file(fp, ";");
-
-
-    const auto testResult = res();
-    for(const auto& row : testResult) {
-        for(const auto& field : row)
-            std::cout << field << " ";
-        
-        std::cout << "\n";
-    };
-
     EXPECT_EQ(res.isError(), false);  
 }
 

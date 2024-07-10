@@ -12,10 +12,9 @@ typedef std::vector<TableRow>    TableData;
 typedef Result<TableData>        TableResult;
 
 namespace Sandbox { namespace Tools {
-    Result<TableData> parse_csv_file_impl( 
-                        const std::string& file_name,
-                        const std::string& delimiter = ",",
-                        const std::string& header    = "");  
+    TableResult parse_csv_file_impl( const std::string& file_name,
+                                     const std::string& delimiter = ",",
+                                     const std::string& header    = "");  
 }}
 
 #endif //TOOLS_IMPL_H

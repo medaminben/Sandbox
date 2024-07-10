@@ -27,7 +27,8 @@ St::parse_csv_file_impl(const std::string& file_name,
     std::getline(file, line);
 
     if (!header.empty()){
-        if(!header.compare(line)) {
+        if(header.compare(line)) {
+
             auto error = Sc::Error<>("wrong header, the given header doesn't match the one in the file"); 
             return TableResult(error);
         } 
