@@ -2,15 +2,15 @@
 #include <Sandbox/Core/Core.h>
  
 namespace Sandbox { namespace Core {
-CoreException::CoreException(const char* str) {
-    message =  new std::string(str);
+ SandException::SandException(const char* str) {
+    message = std::make_unique<std::string>(str);
 }
 
-CoreException::~CoreException() throw() {
-    delete message;
+SandException::~SandException() throw() {
+    
 }
 
-const char* CoreException::what() const throw() {
+const char* SandException::what() const throw() {
     return message->c_str();
 }
 

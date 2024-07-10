@@ -4,7 +4,21 @@
 #include <variant>
 #include <string>
 #include <exception>
+#include <memory>
 namespace Sandbox { namespace Core {
+    /**
+    * @brief 
+    * 
+    */
+    struct SANDBOX_CORE_API SandException : public std::exception
+    {
+        SandException(const char* str) ;
+        ~SandException() throw();
+        const char* what() const throw();
+    private:
+        std::unique_ptr<std::string> message;
+    };
+
     /**
      * @brief an error wrapper
      * 
@@ -23,21 +37,10 @@ namespace Sandbox { namespace Core {
         E _error;
     };
    
-    /**
-    * @brief 
-    * 
-    */
-    struct SANDBOX_CORE_API CoreException : public std::exception
-    {
-        CoreException(const char* str);
-        ~CoreException() throw();
-        const char* what() const throw();
-    private:
-        std::string* message;
-    };
+
 }}
- 
 namespace Sc = Sandbox::Core;
+
 
  /**
  * @brief  a result wrapper
@@ -45,7 +48,7 @@ namespace Sc = Sandbox::Core;
  * @tparam T  a value type
  * @tparam ET  an error type 
  */
-template<typename T, typename ET = Sc::Error<>>
+template<typename T = std::monostate, typename ET = Sc::Error<>>
 struct Result {
 public:
     constexpr Result(T value) : result(std::move(value)) {};
@@ -70,4 +73,5 @@ public:
 private:
     std::variant<T, ET> result;
 };
+
 #endif // CORE_H

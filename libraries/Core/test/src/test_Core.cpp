@@ -27,3 +27,12 @@ TEST(test_Core_result_simple, simple_result_properties) {
     EXPECT_EQ(result.isValue(), false);
     EXPECT_EQ(result.isError(), true);
 }
+
+
+TEST(test_Core_result_void, void_result_properties) {
+    auto error  = Sc::Error<>("error");
+    auto result = Result<>(error);
+    EXPECT_STREQ(result.error().c_str(), error().c_str());
+    EXPECT_EQ(result.isValue(), false);
+    EXPECT_EQ(result.isError(), true);
+}
