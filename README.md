@@ -9,3 +9,13 @@ The base unit of the system is a value. The system at any moment of the life cyc
 - Value any rValue type
 - Error 
 - Result<Value,Error>  
+
+## Tools
+A classic boring tools library
+it collects some useful features:
+### CSV Parser: 
+a tiny csv parser facility highly needed for the deserialization, (no need of serialization right now)
+...
+## Geo
+in a way or another as the std algorithms library, just collects some geometric manipulation features 
+
