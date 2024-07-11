@@ -8,6 +8,7 @@ include(libraryGenerator)
 
 set(LIBRARIES_LIST Core 
                    Tools
+                   Geo
 )
 
 set(lib_LOCATION ${CMAKE_SOURCE_DIR}/libraries)
