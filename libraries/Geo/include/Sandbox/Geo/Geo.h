@@ -30,7 +30,7 @@ namespace Sandbox { namespace Geo {
          * @tparam T integral type 
          * @param items total number of items 
          * @param to_choose number of item to choose
-         * @return T 
+         * @return Result<float>
          */
         template <typename T = size_t>
         Result<float> bino_coef(T items, T to_choose) {
