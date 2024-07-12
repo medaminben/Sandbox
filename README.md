@@ -20,4 +20,6 @@ a tiny csv parser facility highly needed for the deserialization, (no need of se
 in one way or another like the standard algorithm library, only collects some geometric manipulation features 
 
 
+- implementation of the factorial template meta-programming 
+- implementation of the binomial coefficient using the multiplicative formula
 
