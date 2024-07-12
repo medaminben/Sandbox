@@ -34,6 +34,7 @@ set(PRIVATE_DEPS
 )
 #public dependencies
 set(PUBLIC_DEPS
+    ${CMAKE_ROOT_NAME}::Core
 )
 set(TARGET_FILES 
     ${TARGET_HEADERS}
