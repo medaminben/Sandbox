@@ -17,7 +17,6 @@ set(TARGET_HEADERS
     # to their search path, and need to use  the following 
     # kind of path: #include <CMAKE_ROOT_NAME/PROJECT_NAME/...>
     include/Sandbox/Gamebox/Gamebox.h
-    include/Sandbox/Gamebox/Sandbox_export.h
 )
 
 set(TARGET_SOURCES
