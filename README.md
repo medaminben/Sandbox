@@ -17,5 +17,7 @@ it collects some useful features:
 a tiny csv parser facility highly needed for the deserialization, (no need of serialization right now)
 ...
 ## Geo
-in a way or another as the std algorithms library, just collects some geometric manipulation features 
+in one way or another like the standard algorithm library, only collects some geometric manipulation features 
+
+
 
