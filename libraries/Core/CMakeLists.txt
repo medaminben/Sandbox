@@ -8,24 +8,24 @@ set(TST_DISCOVER ON)
 ###############################################################
 set(TARGET_HEADERS
     # private headers belong to "src"
-    #src/Core_impl.h
+    # src/${TARGET_NAME}_impl.h
     # Public headers belong in: include/CMAKE_ROOT_NAME/...
     # Other components and applications will add "include" 
     # to their search path, and need to use  the following 
     # kind of path: #include <CMAKE_ROOT_NAME/PROJECT_NAME/...>
-    include/${CMAKE_ROOT_NAME}/Core/Core.h
+    include/${CMAKE_ROOT_NAME}/${TARGET_NAME}/${TARGET_NAME}.h
 )
 
 set(TARGET_SOURCES
     # Source files belong in "src", 
     # they will never been seen or used by other components, 
-    src/Core.cpp
-    #src/Core_impl.cpp
+    src/${TARGET_NAME}.cpp
+    #src/${TARGET_NAME}_impl.cpp
 )
 
 set(TARGET_RSC
     # resources 
-    #test/data
+    #test/data/${TARGET_NAME}TestData.txt
 )
 
 ##dependencies
@@ -45,7 +45,7 @@ set(TARGET_FILES
 set(TST_SOURCES
     # C++ files containing test cases should start with test_ 
     # to identify them more easily.
-    test/src/test_Core.cpp
+    test/src/test_${TARGET_NAME}.cpp
 )
 
 # Test dependencies other than the actual library

@@ -14,7 +14,7 @@ option(BUILD_APPS            "Build applications" ON)
 option(BUILD_QT_UI           "Build Qt based applications" ON)
 option(BUILD_VERBOSE_OUTPUT  "Build with verbose output" ON)  
 option(BUILD_TESTING         "Build tests" ON)  
-  
+
 
 # Let include() find modules with out an explicit directory 
 # and without a suffix:

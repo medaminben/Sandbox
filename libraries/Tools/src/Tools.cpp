@@ -10,4 +10,3 @@ St::parse_csv_file( const std::string& file_name,
      return parse_csv_file_impl(file_name, delimiter, header); 
 }
  
-

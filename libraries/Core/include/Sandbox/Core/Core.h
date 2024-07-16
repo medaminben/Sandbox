@@ -68,7 +68,7 @@ public:
     };
 
     constexpr auto&& error(){ 
-        return std::get<ET>(result)(); 
+        return std::move(std::get<ET>(result)()); 
     };
 private:
     std::variant<T, ET> result;
