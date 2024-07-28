@@ -26,6 +26,7 @@ set(TARGET_SOURCES
 set(TARGET_RSC
     # resources 
     test/data/csvFile.csv
+    test/data/iniFile_ill.ini
 )
 
 ##dependencies
