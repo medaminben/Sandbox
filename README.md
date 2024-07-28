@@ -13,8 +13,10 @@ The base unit of the system is a value. The system at any moment of the life cyc
 ## Tools
 A classic boring tools library
 it collects some useful features:
-### CSV Parser: 
+#### CSV Parser: 
 a tiny csv parser facility highly needed for the deserialization, (no need of serialization right now)
+#### INI Parser: 
+An ini parser facility, useful to manage data locally by collecting constant informations from ini file such as storage, logging locations, user specific things... 
 ...
 ## Geo
 in one way or another like the standard algorithm library, only collects some geometric manipulation features 
