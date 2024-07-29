@@ -24,4 +24,7 @@ in one way or another like the standard algorithm library, only collects some ge
 
 - implementation of the factorial template meta-programming 
 - implementation of the binomial coefficient using the multiplicative formula
+- definition of a Point:
+    - a point is a bundle of n coordinates 
+    - special case 2D point  
 
