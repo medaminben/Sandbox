@@ -37,7 +37,7 @@ namespace Sandbox { namespace Core {
         E _error;
     };
    
-
+    static constexpr const std::string unknown = "unknown";
 }}
 namespace Sc = Sandbox::Core;
 
