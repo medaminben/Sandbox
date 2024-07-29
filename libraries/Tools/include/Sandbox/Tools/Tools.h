@@ -7,8 +7,6 @@
 #include <string>
 #include <vector>
 namespace Sandbox { namespace Tools {
-
-    static inline constexpr std::string const unknown = "unknown";
     //////////////////////////////////////////////////
     /////////////// csv parser ///////////////////////
     //////////////////////////////////////////////////
@@ -21,7 +19,6 @@ namespace Sandbox { namespace Tools {
     //////////////////////////////////////////////////
     /////////////// csv parser ///////////////////////
     //////////////////////////////////////////////////
-
     /**
      * @brief iniFile 
      * 
@@ -38,7 +35,7 @@ namespace Sandbox { namespace Tools {
     struct iniFile {
         // own containers
         struct Section {
-            constexpr Section(std::string const& name = unknown): label(name){};      
+            constexpr Section(std::string const& name = Sc::unknown): label(name){};      
             struct Property{
                 constexpr Property(std::string const& k, 
                                 std::string const& v) 

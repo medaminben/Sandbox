@@ -27,10 +27,10 @@ St::parse_csv_file_impl(const std::string& file_name,
             return TableResult(Sc::Error<>("wrong header, the given header doesn't match the one in the file"));
     }else {
         while ((pos = line.find(delimiter)) != std::string::npos) {
-            row.push_back(line.substr(0, pos));
+            row.emplace_back(std::move(line.substr(0, pos)));
             line.erase(0, pos + delimiter.length());
         }
-        data.push_back(row);
+        data.emplace_back(std::move(row));
     }
     
     while (!file.eof()) {
@@ -40,14 +40,14 @@ St::parse_csv_file_impl(const std::string& file_name,
         std::getline(file, line);
         // slice the line by the delimiter
         while ((pos = line.find(delimiter)) != std::string::npos) {
-            row.push_back(line.substr(0, pos));
+            row.emplace_back(std::move(line.substr(0, pos)));
             line.erase(0, pos + delimiter.length());
         }
         //check for last value
         if(!line.empty()) 
-            row.push_back(line);
+            row.emplace_back(std::move(line));
         // add the row to the table  
-        data.push_back(row);
+        data.emplace_back(std::move(row));
     }
     
     return Result<TableData>(data);
@@ -85,12 +85,12 @@ Result<St::iniFile> Sandbox::Tools::parse_ini_file_impl(const std::string &file_
             continue;
         // match section
         if (std::regex_search( line, matches, St::section)) {
-            data.sections.push_back(iniFile::Section(matches.str(1)));
+            data.sections.emplace_back(iniFile::Section(matches.str(1)));
             continue;
         }
         // match property 
         if (std::regex_search( line, matches, St::property)) {
-            data.sections.back().properties.push_back(
+            data.sections.back().properties.emplace_back(
                 iniFile::Section::Property(matches.str(1),matches.str(2)));
             continue;
         }

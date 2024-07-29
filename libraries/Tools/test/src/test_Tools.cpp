@@ -12,8 +12,8 @@
 // useful to reduce compile time by discarding the archived tests
 #define TEST_ARC   true
 #if TEST_ARC
-#define TEST_CSV   false 
-#define TEST_REGEX false
+#define TEST_CSV   true 
+#define TEST_REGEX true
 #define TEST_INI   true
 #endif
 

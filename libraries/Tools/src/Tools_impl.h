@@ -14,6 +14,7 @@ typedef std::vector<TableRow>    TableData;
 typedef Result<TableData>        TableResult;
 
 namespace Sandbox { namespace Tools {
+
     static inline const std::regex 
     property = std::regex("^\\s*(\\w+)\\s*=\\s*(.[^;#\\n]*)\\s*[;#]?(.*)?");
     static inline const std::regex 
