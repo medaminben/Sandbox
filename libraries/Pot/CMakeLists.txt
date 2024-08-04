@@ -12,6 +12,7 @@ set(TARGET_HEADERS
     # to their search path, and need to use  the following 
     # kind of path: #include <CMAKE_ROOT_NAME/PROJECT_NAME/...>
     include/${CMAKE_ROOT_NAME}/${TARGET_NAME}/${TARGET_NAME}.h
+    include/${CMAKE_ROOT_NAME}/${TARGET_NAME}/INIfile.h
 )
 
 set(LIBRARY_ALIAS ${CMAKE_ROOT_NAME}::${TARGET_NAME})
@@ -46,6 +47,7 @@ if(BUILD_TESTING)
     )
     set(TEST_NAME "test_${LIBRARY_NAME_RAW}")
     set(GTEST_DEPENDENCIES gtest gmock_main gmock)
+    
     build_gtest_executable(
        ${TEST_NAME} 
         SRC
