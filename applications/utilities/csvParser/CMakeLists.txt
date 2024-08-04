@@ -38,9 +38,11 @@ set(${EXECUTABLE_NAME}_BUILD_ARGS
 #################################################
 # Build all the projects
 #################################################
-configure_file(myCSVFile.csv ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/myCSVFile.csv COPYONLY)
-foreach(item IN LISTS PROJECT_LIST)
 
+foreach(item IN LISTS PROJECT_LIST)
+    foreach(rsc IN LISTS ${item}_RSC)
+        file(COPY ${rsc} DESTINATION ${PROJECT_BUILD_OUTPUT}/data/${EXECUTABLE_NAME})
+    endforeach()
     if(BUILD_${item})
         # create_application(
         #     NAME  "PROJECT_x_NAME"
