@@ -3,7 +3,9 @@
 #include <string>
 #include <fstream>
 #include <regex>
+#include <Sandbox/Pot/Pot.h>
 namespace St = Sandbox::Tools;
+
 Result<TableData> 
 St::parse_csv_file_impl(const std::string& file_name,
                         const std::string& delimiter,
@@ -17,7 +19,7 @@ St::parse_csv_file_impl(const std::string& file_name,
     
     std::ifstream file(file_name);
     if (!file.is_open()) 
-        return TableResult(Sc::Error<>("file not found, check the path"));
+        return TableResult(Sc::Error<>(file_name + " : file not found, check the path"));
     
     //get the first line to check if header
     std::getline(file, line);
@@ -53,26 +55,29 @@ St::parse_csv_file_impl(const std::string& file_name,
     return Result<TableData>(data);
 };
 
-std::string St::remove_from_line_breack_impl(std::string const& the_string){
+std::string 
+St::remove_from_line_breack_impl(std::string const& the_string){
     return std::string(erase_from_char(std::string(erase_from_char(the_string,'\n')),'\r'));
-}
+};
 
-std::string St::remove_from_whitespace_impl(std::string const &the_string){
+std::string 
+St::remove_from_whitespace_impl(std::string const &the_string){
     return std::string(erase_from_char(the_string, ' '));
-}
+};
 
-Result<St::iniFile> Sandbox::Tools::parse_ini_file_impl(const std::string &file_path)
+Result<Sp::iniFile> 
+St::parse_ini_file_impl(const std::string &file_path)
 {
     //error cases
     // if no file name
     if(file_path.empty()) 
-        return Result<St::iniFile>(Sc::Error<>("no file path"));
+        return Result<Sp::iniFile>(Sc::Error<>("no file path"));
     
     auto file = std::ifstream(file_path);
     if (!file.is_open()) 
-        return Result<St::iniFile>(Sc::Error<>("file not found, check the path"));
+        return Result<Sp::iniFile>(Sc::Error<>("file not found, check the path"));
     // initialiazation 
-    St::iniFile data{}; std::string line{}; std::smatch matches;
+    Sp::iniFile data{}; std::string line{}; std::smatch matches;
 
     while (!file.eof()) {
         data.line_count++;
@@ -85,20 +90,42 @@ Result<St::iniFile> Sandbox::Tools::parse_ini_file_impl(const std::string &file_
             continue;
         // match section
         if (std::regex_search( line, matches, St::section)) {
-            data.sections.emplace_back(iniFile::Section(matches.str(1)));
+            data.sections.emplace_back(Sp::iniFile::Section(matches.str(1)));
             continue;
         }
         // match property 
         if (std::regex_search( line, matches, St::property)) {
-            data.sections.back().properties.emplace_back(
-                iniFile::Section::Property(matches.str(1),matches.str(2)));
+            data.sections.back().properties().emplace_back(
+                Sp::iniFile::Section::Property(matches.str(1),matches.str(2)));
             continue;
         }
         // if you reach this line very likely that the file is corrupt 
         // a line which is not a comment a property or a section is not allowed!
         const std::string message = std::string("[error] at line ") 
-        + std::to_string(data.line_count) + " content: " + line;
-        return Result<iniFile>(Sc::Error<>(message));
+                                  + std::to_string(data.line_count) + " content: " + line;
+        return Result<Sp::iniFile>(Sc::Error<>(message));
     }
-    return Result<iniFile>(data);
+    return Result<Sp::iniFile>(data);
+};
+
+
+std::smatch matches;
+
+const bool St::isComment(std::string const& line) noexcept { 
+    return std::regex_search(line, matches, St::comment_line);
+}
+
+const bool St::isData_then_get(std::string const& line, 
+                       Sp::iniFile& data) noexcept { 
+    auto result = std::regex_search(line, matches, St::section);
+    if(result) { data.sections.emplace_back(Sp::iniFile::Section(matches.str(1))); 
+        return result;
+    }
+    result = std::regex_search(line, matches, St::property);
+    if(result) {
+        auto property = Sp::iniFile::Section::Property(matches.str(1),matches.str(2));
+        data.sections.back().properties().emplace_back(property); 
+        return result;
+    }
+    return result;       
 }

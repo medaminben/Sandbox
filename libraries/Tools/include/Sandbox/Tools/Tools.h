@@ -2,10 +2,7 @@
 #define TOOLS_H
 #include "Sandbox_Tools_export.h"
 #include <Sandbox/Core/Core.h>
-
-#include <stdint.h>
-#include <string>
-#include <vector>
+#include <Sandbox/Pot/Pot.h>
 namespace Sandbox { namespace Tools {
     //////////////////////////////////////////////////
     /////////////// csv parser ///////////////////////
@@ -19,38 +16,10 @@ namespace Sandbox { namespace Tools {
     //////////////////////////////////////////////////
     /////////////// csv parser ///////////////////////
     //////////////////////////////////////////////////
-    /**
-     * @brief iniFile 
-     * 
-     * ini files are widly used in windows system as a flat serialization of data
-     * the format support sections comments and properties as variable value pair
-     * as example
-     * 
-     * ;here a comment line 
-     * [a sction]; a comment
-     * #this a comment line too
-     * a_variable = it can be whatever value # but here starts a comment
-     * 
-     */
-    struct iniFile {
-        // own containers
-        struct Section {
-            constexpr Section(std::string const& name = Sc::unknown): label(name){};      
-            struct Property{
-                constexpr Property(std::string const& k, 
-                                std::string const& v) 
-                            : key(k),value(v) {};
-                std::string key{}, value{};
-            };
-            std::string           label{}; 
-            std::vector<Property> properties{};
-        };
-        std::vector<Section> sections{Section()};
-        size_t               line_count{0}; 
-    };
 
-    Result<iniFile> 
-    SANDBOX_TOOLS_API parse_ini_file(const std::string& file_path);
+
+    Result<Pot::iniFile> 
+    SANDBOX_TOOLS_API parse_ini_file(const std::string& file_path) noexcept;
 
 
     //////////////////////////////////////////////////

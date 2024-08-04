@@ -7,7 +7,7 @@
 #include <fstream>
 #include <regex>
 #include <Sandbox/Core/Core.h>
-#include <Sandbox/Tools/Tools.h>
+#include <Sandbox/Pot/Pot.h>
 
 typedef std::vector<std::string> TableRow;
 typedef std::vector<TableRow>    TableData;
@@ -52,8 +52,10 @@ namespace Sandbox { namespace Tools {
                                      const std::string& delimiter = ",",
                                      const std::string& header    = "");  
 
-    Result<St::iniFile> parse_ini_file_impl(const std::string &file_path);
+    Result<Sp::iniFile> parse_ini_file_impl(const std::string &file_path);
 
+    const bool isComment(std::string const& line) noexcept; 
+    const bool isData_then_get(std::string const& line, Sp::iniFile& data) noexcept;
 }}
 
 #endif //TOOLS_IMPL_H

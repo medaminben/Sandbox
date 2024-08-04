@@ -18,7 +18,7 @@
 #endif
 
 namespace test_Tools {
-    static std::string data_dir ="data/test_sandbox_Tools/";
+    static std::string data_dir ="../data/sandbox_tools/";
     
     bool inline print_matches(const std::string& str, const std::regex& reg) {
         bool result{false}; 
@@ -157,24 +157,24 @@ TEST (test_Tools_remove_extra_whitespaces, space) {
 #endif
 
 #if TEST_INI 
-TEST(test_Tools_csv_parser, parsing_error){
+TEST(test_Tools_ini_parser, parsing_error){
     const auto fp = test_Tools::data_dir + "iniFile_ill.ini";
     auto res = St::parse_ini_file(fp);
     if(res.isError())
         std::cout << "\n Error parsing ini : " << res.error() << "\n"; 
     EXPECT_EQ(res.isError(), true);
 }
-TEST(test_Tools_csv_parser, parsed_data){
+TEST(test_Tools_ini_parser, parsed_data){
     const auto fp = test_Tools::data_dir + "iniFile.ini";
     auto res = St::parse_ini_file(fp);
     if(res.isValue()){
         const auto data = res();
         for(auto const& s: data.sections) {
-            if(s.properties.size() == 0) // ignore empty sections
+            if(s.properties().size() == 0) // ignore empty sections
                 continue;
-            std::cout << "Section: " << s.label <<"\n";
-            for(auto const& p : s.properties) 
-                std::cout << "Property[key , value]: [" << p.key <<" , "<< p.value <<"]\n";
+            std::cout << "Section: " << s.label() <<"\n";
+            for(auto const& p : s.properties()) 
+                std::cout << "Property[key , value]: [" << p.key() <<" , "<< p.value() <<"]\n";
         }
     }
     EXPECT_EQ(res.isError(), false);
