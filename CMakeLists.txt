@@ -31,6 +31,7 @@ include(Common)
 set(libraries_list  
         Gamebox 
         Core
+        Pot
         Tools
         Geo
 ) 
