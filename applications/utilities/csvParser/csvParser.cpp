@@ -53,11 +53,11 @@ int main()
 
 	const std::string myHeader = "Device;Distance;ZoomAngle;FocusPosition;FocusStep;";
 	const std::string delimiter = ";";	
-	const auto file_name = "myCSVFile.csv";
+	const std::string file_name = "../data/csvParser/myCSVFile.csv";
 	try {
 		auto result = St::parse_csv_file(file_name, delimiter, myHeader);
 		if(result.isError()) {
-			std::cout << result.error() << "\n";
+			std::cout <<"error: " << result.error() << "\n";
 			return -1;
 		}
 		for(const auto& row : result()) {
