@@ -22,14 +22,14 @@ namespace Sandbox { namespace Core {
     /**
      * @brief an error wrapper
      * 
-     * @tparam E any movable error type 
+     * @param E any movable error type 
      */
     template <typename E = std::string>
     struct Error {
     public:
-        constexpr Error(E error): _error(std::move(error)) {};
+        constexpr inline Error(E error): _error(std::move(error)) {};
 
-        constexpr auto&& operator()() { 
+        constexpr inline auto&& operator()() { 
             return std::move(_error); 
         };
 
@@ -38,6 +38,12 @@ namespace Sandbox { namespace Core {
     };
    
     static constexpr const std::string unknown = "unknown";
+        /**
+     * @brief Get an unique point id related to the actual session
+     * It can be lead to duplicate if the used id source is external to the actual session
+     * @return size_t 
+     */
+    SANDBOX_CORE_API size_t get_unique_index() noexcept;
 }}
 namespace Sc = Sandbox::Core;
 
@@ -45,29 +51,27 @@ namespace Sc = Sandbox::Core;
  /**
  * @brief  a result wrapper
  * 
- * @tparam T  a value type
- * @tparam ET  an error type 
+ * @param T  a value type
+ * @param ET  an error type 
  */
 template<typename T = std::monostate, typename ET = Sc::Error<>>
 struct Result {
 public:
     constexpr Result(T value) : result(std::move(value)) {};
+    constexpr inline Result(ET error) : result(std::move(error)) {};
 
-    constexpr auto isValue() const { 
+    constexpr inline auto isValue() const noexcept { 
         return std::holds_alternative<T>(result); 
     };
 
-    constexpr auto&& operator()()  { 
-        return std::move(std::get<T>(result)); 
-    };
-
-    constexpr Result(ET error) : result(std::move(error)) {};
-
-    constexpr auto isError() const { 
+    constexpr inline auto isError() const noexcept { 
         return std::holds_alternative<ET>(result); 
     };
 
-    constexpr auto&& error(){ 
+    constexpr inline auto&& operator()()  { 
+        return std::move(std::get<T>(result)); 
+    };
+    constexpr inline auto&& error() { 
         return std::move(std::get<ET>(result)()); 
     };
 private:

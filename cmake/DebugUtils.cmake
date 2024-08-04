@@ -39,3 +39,22 @@ function(print)
     endforeach()
 endfunction()
 
+
+# prompt a message in verbose case 
+function(prompt)
+    if(NOT BUILD_VERBOSE_OUTPUT)
+        return()
+    endif()
+    set(options WARNING STATUS)
+    set(single_value_args)
+    set(list_args)
+
+    cmake_parse_arguments( PARSE_ARGV 0 prom 
+        "${options}" "${single_value_args}" "${list_args}"
+    )
+    if(prom_WARNING)
+        message(WARNING " /!\\  ${prom_UNPARSED_ARGUMENTS}")
+    else() 
+        message(STATUS " >>>>>> ${prom_UNPARSED_ARGUMENTS}")
+    endif()
+endfunction()

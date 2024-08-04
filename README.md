@@ -3,28 +3,29 @@ a practice repo based on [project-unit](https://github.com/medaminben/project-un
 
 
 ## Libraries
-### Core
-The core library defines the common code base such as containers and custom types to ensure a manageable system
-The base unit of the system is a value. The system at any moment of the life cycle is not doing other than managing values, but the result of the processing can be errors in exception and corner cases: 
-- Value any rValue type
+The implementation is classified by topic in different libraries:
+#### Core
+The core library defines the common code base. 
+The base unit of the system is a value. The system at any moment of the life cycle is not doing other than managing values from call to result. The result of the processing should be a value but can be errors in exception and corner cases. Following this strategy increases the safety of the development, and converges to the deterministic characteristic of the end product.
 - Error 
-- Result<Value,Error>  
+- Result<Value,Error>  of any type 
 
-## Tools
+Annexed features:
+- Index generator: A global core scope counter. can be called by Sc::get_unique_index. To use carefully, that the uniqueness is just in the actual run session by restart jumps to 0 (to do: make it unique forever) 
+
+
+#### Tools
 A classic boring tools library
 it collects some useful features:
-#### CSV Parser: 
-a tiny csv parser facility highly needed for the deserialization, (no need of serialization right now)
-#### INI Parser: 
-An ini parser facility, useful to manage data locally by collecting constant informations from ini file such as storage, logging locations, user specific things... 
-...
-## Geo
+- CSV Parser: a tiny csv parser facility highly needed for the deserialization, (no need of serialization right now)
+- INI Parser: An ini parser facility, useful to manage data locally by collecting constant information from ini file such as storage, logging locations, user specific things... 
+
+#### Geo
 in one way or another like the standard algorithm library, only collects some geometric manipulation features 
-
-
 - implementation of the factorial template meta-programming 
 - implementation of the binomial coefficient using the multiplicative formula
-- definition of a Point:
+- Definition of a Point:
     - a point is a bundle of n coordinates 
     - special case 2D point  
+
 

@@ -15,14 +15,8 @@ function(check_project_name)
     set(options)
     set(single_value_args NAME)
     set(list_args NAME_LIST)
-
-    cmake_parse_arguments( 
-        PARSE_ARGV 0
-        parameter 
-        "${options}" 
-        "${single_value_args}"  
-        "${list_args}"
-    )
+    cmake_parse_arguments( PARSE_ARGV 0 parameter "${options}" "${single_value_args}" "${list_args}")
+    
     foreach(arg IN LISTS parameter_UNPARSED_ARGUMENTS)
         message(" >>>>>> unparsed argumemnt: ${arg}")
     endforeach()
@@ -52,126 +46,113 @@ endmacro()
 
 
 function(create_library)
-# LIB_NAME              ${TARGET_NAME}  LIB_FILES           ${TARGET_FILES}    
-# PRIVATE_DEPENDENCIES  ${PRIVATE_DEPS} PUBLIC_DEPENDENCIES ${PUBLIC_DEPS}
-# TEST_DISCOVER         ${TST_DISCOVER} TEST_SOURCES        ${TST_SOURCES}    
-# TEST_DEPENDENCIES     ${TEST_DEPS}    LIB_RSC             ${TARGET_RSC}
-set(options)
-set(single_value_args LIB_NAME TEST_DISCOVER)
-set(list_args LIB_FILES PRIVATE_DEPENDENCIES PUBLIC_DEPENDENCIES 
-              TEST_SOURCES TEST_DEPENDENCIES LIB_RSC)
+    # LIB_NAME              ${TARGET_NAME}  LIB_FILES           ${TARGET_FILES}    
+    # PRIVATE_DEPENDENCIES  ${PRIVATE_DEPS} PUBLIC_DEPENDENCIES ${PUBLIC_DEPS}
+    # TEST_DISCOVER         ${TST_DISCOVER} TEST_SOURCES        ${TST_SOURCES}    
+    # TEST_DEPENDENCIES     ${TEST_DEPS}    LIB_RSC             ${TARGET_RSC}
+    set(options)
+    set(single_value_args LIB_NAME TEST_DISCOVER)
+    set(list_args LIB_FILES PRIVATE_DEPENDENCIES PUBLIC_DEPENDENCIES TEST_SOURCES TEST_DEPENDENCIES LIB_RSC)
+    cmake_parse_arguments( PARSE_ARGV 0 parameter "${options}"  "${single_value_args}" "${list_args}" )
 
-cmake_parse_arguments( 
-    PARSE_ARGV 0
-    parameter 
-    "${options}" 
-    "${single_value_args}"  
-    "${list_args}"
-)
+    foreach(arg IN LISTS parameter_UNPARSED_ARGUMENTS)
+        message(" >>>>>> unparsed argumemnt: ${arg}")
+    endforeach()
 
-foreach(arg IN LISTS parameter_UNPARSED_ARGUMENTS)
-    message(" >>>>>> unparsed argumemnt: ${arg}")
-endforeach()
-
-if(DEFINED CMAKE_ROOT_NAME 
-   AND NOT CMAKE_ROOT_NAME STREQUAL "")
-    # Clients of this library should use this name, it contains a double colon
-    # which tells CMake it's a target and allows for more specific error messages.
-    set(LIBRARY_NAME  ${CMAKE_ROOT_NAME}::${parameter_LIB_NAME})
-    # The internal, raw name is generated from LIBRARY_NAME
-    get_raw_target_name(${LIBRARY_NAME} LIBRARY_NAME_RAW )
-else()
-    set(LIBRARY_NAME  ${parameter_LIB_NAME})
-    # The internal, raw name is generated from LIBRARY_NAME
-    set(LIBRARY_NAME_RAW ${LIBRARY_NAME})
-endif()
+    if(DEFINED CMAKE_ROOT_NAME AND NOT CMAKE_ROOT_NAME STREQUAL "") 
+        # Clients of this library should use this name, it contains a double colon
+        # which tells CMake it's a target and allows for more specific error messages.
+        set(LIBRARY_NAME  ${CMAKE_ROOT_NAME}::${parameter_LIB_NAME})
+        # The internal, raw name is generated from LIBRARY_NAME
+        get_raw_target_name(${LIBRARY_NAME} LIBRARY_NAME_RAW )
+    else()
+        set(LIBRARY_NAME  ${parameter_LIB_NAME})
+        # The internal, raw name is generated from LIBRARY_NAME
+        set(LIBRARY_NAME_RAW ${LIBRARY_NAME})
+    endif()
 
 
-###############################################################
-# now add library 
-###############################################################
+    ###############################################################
+    # now add library 
+    ###############################################################
 
-add_library(${LIBRARY_NAME_RAW} ${parameter_LIB_FILES})
+    add_library(${LIBRARY_NAME_RAW} ${parameter_LIB_FILES})
 
-# create a dummy library aliasing the raw name
-add_library(${LIBRARY_NAME} ALIAS ${LIBRARY_NAME_RAW})
+    # create a dummy library aliasing the raw name
+    add_library(${LIBRARY_NAME} ALIAS ${LIBRARY_NAME_RAW})
 
-include(GenerateExportHeader)
-string(TOUPPER ${CMAKE_ROOT_NAME} ROOT_FLAG)
-string(TOUPPER ${parameter_LIB_NAME} LIB_FLAG)
-#add_definitions(-DMAKE_${API_FLAG} )
-generate_export_header(${LIBRARY_NAME_RAW}
-                       EXPORT_FILE_NAME "${CMAKE_CURRENT_SOURCE_DIR}/include//${CMAKE_ROOT_NAME}/${parameter_LIB_NAME}/${CMAKE_ROOT_NAME}_${parameter_LIB_NAME}_export.h"
-                       EXPORT_MACRO_NAME ${ROOT_FLAG}_${LIB_FLAG}_API
-                       BASE_NAME ${ROOT_FLAG}_${LIB_FLAG}
-                       DEFINE_NO_DEPRECATED)
-                       #NO_EXPORT_MACRO_NAME ${API_FLAG}_API)
-###############################################################
-# Manage compiler Flags
-###############################################################
+    include(GenerateExportHeader)
+    string(TOUPPER ${CMAKE_ROOT_NAME}    ROOT_FLAG)
+    string(TOUPPER ${parameter_LIB_NAME} LIB_FLAG)
+    #add_definitions(-DMAKE_${API_FLAG} )
+    generate_export_header(${LIBRARY_NAME_RAW}
+                        EXPORT_FILE_NAME "${CMAKE_CURRENT_SOURCE_DIR}/include//${CMAKE_ROOT_NAME}/${parameter_LIB_NAME}/${CMAKE_ROOT_NAME}_${parameter_LIB_NAME}_export.h"
+                        EXPORT_MACRO_NAME ${ROOT_FLAG}_${LIB_FLAG}_API
+                        BASE_NAME ${ROOT_FLAG}_${LIB_FLAG}
+                        DEFINE_NO_DEPRECATED)
+                        #NO_EXPORT_MACRO_NAME ${API_FLAG}_API)
+    ###############################################################
+    # Manage compiler Flags
+    ###############################################################
 
-# This is used in build with MSVC an export flag must be set  
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    set(compiler_id 1)
-else()
-    set(compiler_id 0)
-endif()
+    # This is used in build with MSVC an export flag must be set  
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        set(compiler_id 1)
+    else()
+        set(compiler_id 0)
+    endif()
 
-
-###############################################################
-# linking
-###############################################################
-target_include_directories(${LIBRARY_NAME_RAW}
-    PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
-        $<INSTALL_INTERFACE:include/>
-)
-target_link_libraries(${LIBRARY_NAME_RAW}
-    PRIVATE
-        # private dependencies here
-        ${parameter_PRIVATE_DEPENDENCIES}
-    PUBLIC
-        # public dependencies here
-        ${parameter_PUBLIC_DEPENDENCIES}
-)
-
-###############################################################
-# Testing
-###############################################################
-if(BUILD_TESTING)
-    # Test executable names must start with "test_" 
-    # and be lowercase
-    set(TEST_NAME "test_${LIBRARY_NAME_RAW}")
-    set(GTEST_DEPENDENCIES gtest gmock_main gmock)
-    # usage: 
-    # include("TestUtils")
-    # add_gtest_executable(test_library_name
-    #     SRC
-    #         test_file1.cpp
-    #         test_file2.cpp
-    #     DEPENDS
-    #         Some::Libs
-    #     DISCOVER
-    #         [ON/OFF]
-    # )
-    build_gtest_executable(
-       ${TEST_NAME} 
-        SRC
-        # C++ files containing test cases should start 
-        # with test_ to identify them more easily.
-            ${parameter_TEST_SOURCES}
-        DEPENDS
-            ${parameter_TEST_DEPENDENCIES} 
-            ${GTEST_DEPENDENCIES}
-            ${LIBRARY_NAME}
-        DISCOVER
-            ${parameter_TEST_DISCOVER}
+    ###############################################################
+    # linking
+    ###############################################################
+    target_include_directories(${LIBRARY_NAME_RAW}
+        PUBLIC
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
+            $<INSTALL_INTERFACE:include/>
     )
-endif()
+    target_link_libraries(${LIBRARY_NAME_RAW}
+        PRIVATE
+            # private dependencies here
+            ${parameter_PRIVATE_DEPENDENCIES}
+        PUBLIC
+            # public dependencies here
+            ${parameter_PUBLIC_DEPENDENCIES}
+    )
 
+    ###############################################################
+    # Testing
+    ###############################################################
+    if(BUILD_TESTING)
+        # Test executable names must start with "test_" 
+        # and be lowercase
+        set(TEST_NAME "test_${LIBRARY_NAME_RAW}")
+        set(GTEST_DEPENDENCIES gtest gmock_main gmock)
+        # usage: 
+        # include("TestUtils")
+        # add_gtest_executable(test_library_name
+        #     SRC
+        #         test_file1.cpp
+        #         test_file2.cpp
+        #     DEPENDS
+        #         Some::Libs
+        #     DISCOVER
+        #         [ON/OFF]
+        # )
+        build_gtest_executable(
+        ${TEST_NAME} 
+            SRC
+            # C++ files containing test cases should start 
+            # with test_ to identify them more easily.
+                ${parameter_TEST_SOURCES}
+            DEPENDS
+                ${parameter_TEST_DEPENDENCIES} 
+                ${GTEST_DEPENDENCIES}
+                ${LIBRARY_NAME}
+            DISCOVER
+                ${parameter_TEST_DISCOVER}
+        )
+    endif()
 endfunction()
-
-
 
 # create_application(
 #     NAME  "PROJECT_x_NAME"
@@ -187,14 +168,7 @@ function(create_application)
     set(options)
     set(single_value_args NAME ENTRY UI)
     set(list_args HEADERS SOURCES RESOURCES BUILD_ARGS DEPENDENCIES)
-
-    cmake_parse_arguments( 
-        PARSE_ARGV 0
-        app 
-        "${options}" 
-        "${single_value_args}"  
-        "${list_args}"
-    )
+    cmake_parse_arguments( PARSE_ARGV 0 app "${options}" "${single_value_args}" "${list_args}")
 
     foreach(arg IN LISTS app_UNPARSED_ARGUMENTS)
         message(" >>>>>> unparsed argumemnt: ${arg}")
@@ -206,33 +180,57 @@ function(create_application)
     set(PROJECT_FILES ${app_HEADERS} ${app_SOURCES} ${app_UI} ${app_RESOURCES})
     if(app_ENTRY STREQUAL "Console")
         # build the executable
-        add_executable( 
-            ${app_NAME}       
-            ${app_BUILD_ARGS}                   
-            ${PROJECT_FILES}
-        )
-        
-    elseif(app_ENTRY STREQUAL "QT_ui")
-        qt_add_executable( 
-            ${app_NAME}       
-            ${app_BUILD_ARGS}                   
-            ${PROJECT_FILES}
-        )
+        add_executable(${app_NAME} ${app_BUILD_ARGS} ${PROJECT_FILES})
 
+    elseif(app_ENTRY STREQUAL "QT_ui")
+        qt_add_executable(${app_NAME} ${app_BUILD_ARGS} ${PROJECT_FILES})
     endif()
     
     # link the executable
-    #
-    if( DEFINED app_DEPENDENCIES OR NOT app_DEPENDENCIES STREQUAL "")
+    if(DEFINED app_DEPENDENCIES OR NOT app_DEPENDENCIES STREQUAL "")
         target_link_libraries(${app_NAME} PRIVATE ${app_DEPENDENCIES})
     endif()
    
-    
     if(app_ENTRY STREQUAL "QT_ui")
-        set_target_properties(${app_NAME} 
-            PROPERTIES 
-            WIN32_EXECUTABLE TRUE
-            MACOSX_BUNDLE    TRUE
-        )
+        set_target_properties(${app_NAME} PROPERTIES WIN32_EXECUTABLE TRUE MACOSX_BUNDLE TRUE)
     endif()
+endfunction()
+
+# it iterates through the LIBRARIES_LIST in the LIBRARIES_LOCATION path 
+# if the folder exists will just be added as subdirectory, if the folder 
+# doesn't exist then a library boilerplate will be generated using the 
+# configuration template in TEMPLATE_LOCATION
+function(generate_or_add_libraries)
+    #parsing arguments
+    set(options)
+    set(single_value_args LIBRARIES_LOCATION TEMPLATE_LOCATION )
+    set(list_args LIBRARIES_LIST )
+    cmake_parse_arguments( PARSE_ARGV 0 lib "${options}" "${single_value_args}" "${list_args}")
+    foreach(arg IN LISTS lib_UNPARSED_ARGUMENTS)
+        message(" >>>>>> unparsed argumemnt: ${arg}")
+    endforeach()
+    ############################################################
+    #call guard
+    if(NOT DEFINED lib_LIBRARIES_LOCATION OR lib_LIBRARIES_LOCATION STREQUAL "")
+        message(STATUS " >>>>>> generate_libraries missing libraries location. This will be set to default as folder libraries")
+        set(lib_LIBRARIES_LOCATION libraries)
+    endif()
+    if(NOT DEFINED lib_TEMPLATE_LOCATION OR lib_TEMPLATE_LOCATION STREQUAL "")
+        message(STATUS " >>>>>> generate_libraries  missing template location. This will be set to default as folder template")
+        set(lib_TEMPLATE_LOCATION template)
+    endif()
+    ############################################################
+    foreach(item IN LISTS lib_LIBRARIES_LIST)
+    # generate_library( NAME:  library_name
+    #                   DESTINATION:  where is the library folder
+    #                   ROOT_NAME: the root name of the main project 
+    #                   CFG_SRC: configuration source folder 
+    generate_library(NAME        ${item}
+                     DESTINATION ${lib_LIBRARIES_LOCATION} 
+                     ROOT_NAME   ${CMAKE_ROOT_NAME}
+                     CFG_SRC     ${lib_TEMPLATE_LOCATION}
+    )
+    add_subdirectory(${lib_LIBRARIES_LOCATION}/${item})
+    endforeach()
+    ############################################################
 endfunction()

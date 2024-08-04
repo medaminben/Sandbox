@@ -15,7 +15,7 @@ function(generate_library)
     endforeach()
 
     if(NOT DEFINED lib_NAME OR 
-                    lib_NAME STREQUAL "")
+                   lib_NAME STREQUAL "")
         return()
     endif()
 
@@ -39,6 +39,8 @@ function(generate_library)
     set(gen_DIR ${lib_CFG_SRC})
     string(TOUPPER ${lib_ROOT_NAME} lib_ROOT_NAME_UPPER )
     string(TOUPPER ${lib_NAME} lib_NAME_UPPER )
+
+  
 
     configure_file(${gen_DIR}/lib_CMakeLists.txt.in 
                     ${lib_DIR}/CMakeLists.txt)

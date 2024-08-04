@@ -26,12 +26,8 @@ function(build_gtest_executable)
  
     add_executable(${TEST_EXECUTABLE_NAME} ${PARGS_SRC})
     
-    target_link_libraries(${TEST_EXECUTABLE_NAME} PUBLIC ${PARGS_DEPENDS})
-
-    get_filename_component(fullpath "test/data" REALPATH)
-    if(EXISTS ${fullpath})  
-        file(COPY ${fullpath}/ DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/data/${TEST_EXECUTABLE_NAME})
-    endif()
+    target_link_libraries(${TEST_EXECUTABLE_NAME} PUBLIC ${PARGS_DEPENDS})    
+ 
     if(${PARGS_DISCOVER})
         gtest_discover_tests(${TEST_EXECUTABLE_NAME})
     endif()
