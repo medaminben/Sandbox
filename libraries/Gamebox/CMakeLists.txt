@@ -28,7 +28,7 @@ set(TARGET_SOURCES
 
 set(TARGET_RSC
     # resources 
-    PreprocessorTestData.txt
+    test/data/PreprocessorTestData.txt
 )
 
 ##dependencies

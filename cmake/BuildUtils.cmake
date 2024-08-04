@@ -101,7 +101,7 @@ function(create_library)
     else()
         set(compiler_id 0)
     endif()
-
+   
     ###############################################################
     # linking
     ###############################################################
@@ -125,7 +125,7 @@ function(create_library)
     if(BUILD_TESTING)
         # Test executable names must start with "test_" 
         # and be lowercase
-        set(TEST_NAME "test_${LIBRARY_NAME_RAW}")
+        set(TEST_NAME test_${LIBRARY_NAME_RAW})
         set(GTEST_DEPENDENCIES gtest gmock_main gmock)
         # usage: 
         # include("TestUtils")
@@ -151,6 +151,11 @@ function(create_library)
             DISCOVER
                 ${parameter_TEST_DISCOVER}
         )
+        if(DEFINED parameter_LIB_RSC)
+            foreach(item IN LISTS parameter_LIB_RSC)
+                file(COPY ${item} DESTINATION ${PROJECT_BUILD_OUTPUT}/data/${LIBRARY_NAME_RAW})
+            endforeach()
+        endif()
     endif()
 endfunction()
 
@@ -221,16 +226,16 @@ function(generate_or_add_libraries)
     endif()
     ############################################################
     foreach(item IN LISTS lib_LIBRARIES_LIST)
-    # generate_library( NAME:  library_name
-    #                   DESTINATION:  where is the library folder
-    #                   ROOT_NAME: the root name of the main project 
-    #                   CFG_SRC: configuration source folder 
-    generate_library(NAME        ${item}
-                     DESTINATION ${lib_LIBRARIES_LOCATION} 
-                     ROOT_NAME   ${CMAKE_ROOT_NAME}
-                     CFG_SRC     ${lib_TEMPLATE_LOCATION}
-    )
-    add_subdirectory(${lib_LIBRARIES_LOCATION}/${item})
+        # generate_library( NAME:  library_name
+        #                   DESTINATION:  where is the library folder
+        #                   ROOT_NAME: the root name of the main project 
+        #                   CFG_SRC: configuration source folder 
+        generate_library(NAME       ${item}
+                        DESTINATION ${lib_LIBRARIES_LOCATION} 
+                        ROOT_NAME   ${CMAKE_ROOT_NAME}
+                        CFG_SRC     ${lib_TEMPLATE_LOCATION}
+        )
+        add_subdirectory(${lib_LIBRARIES_LOCATION}/${item})
     endforeach()
     ############################################################
 endfunction()
