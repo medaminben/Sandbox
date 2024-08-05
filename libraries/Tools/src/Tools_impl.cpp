@@ -56,7 +56,7 @@ St::parse_csv_file_impl(const std::string& file_name,
 };
 
 std::string 
-St::remove_from_line_breack_impl(std::string const& the_string){
+St::remove_from_line_break_impl(std::string const& the_string){
     return std::string(erase_from_char(std::string(erase_from_char(the_string,'\n')),'\r'));
 };
 

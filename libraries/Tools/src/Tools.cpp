@@ -36,11 +36,11 @@ Result<Sp::iniFile> St::parse_ini_file(const std::string &file_path) noexcept
     }
     return Result<Sp::iniFile>(data);
 }
-Result<std::string> St::remove_from_line_breack(const char* sentence)  { 
+Result<std::string> St::remove_from_line_break(const char* sentence)  { 
      auto _sentence = std::string(sentence);
      if(_sentence.empty())
           return Result<std::string>(Sc::Error<>("nothing to do"));
-     return Result<std::string>(St::remove_from_line_breack_impl(_sentence));
+     return Result<std::string>(St::remove_from_line_break_impl(_sentence));
 }
 Result<std::string> St::remove_from_whitespace(const char *sentence)
 {

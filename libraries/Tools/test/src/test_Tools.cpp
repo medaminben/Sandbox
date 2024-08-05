@@ -60,17 +60,17 @@ TEST (test_Tools_csv_parser, get_proper_result) {
     auto res = St::parse_csv_file(fp, ";");
     EXPECT_EQ(res.isError(), false);  
 }
-TEST (test_Tools_remove_line_breack, error_result) {
-    auto result = St::remove_from_line_breack("");
+TEST (test_Tools_remove_line_break, error_result) {
+    auto result = St::remove_from_line_break("");
     if(result.isError()) 
         std::cout << result.error() << "\n";     
     EXPECT_EQ(true, result.isError());
 }
-TEST (test_Tools_remove_line_breack, trancate_from_br_position) {
-    auto result = St::remove_from_line_breack("this is the sentence with newline \n to be removed from here");
+TEST (test_Tools_remove_line_break, truncate_from_br_position) {
+    auto result = St::remove_from_line_break("this is the sentence with newline \n to be removed from here");
     EXPECT_EQ(0, result().compare("this is the sentence with newline "));
 }
-TEST (test_Tools_remove_white_space, trancate_from_ws_position) {
+TEST (test_Tools_remove_white_space, truncate_from_ws_position) {
     auto result = St::remove_from_whitespace("this is the sentence with newline \n to be removed from here");
     EXPECT_EQ(0, result().compare("this"));
 }
