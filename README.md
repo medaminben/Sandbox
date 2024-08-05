@@ -13,6 +13,13 @@ The base unit of the system is a value. The system at any moment of the life cyc
 Annexed features:
 - Index generator: A global core scope counter. can be called by Sc::get_unique_index. To use carefully, that the uniqueness is just in the actual run session by restart jumps to 0 (to do: make it unique forever) 
 
+#### Pot
+A container class. Collects all frequently used types of own data structures, to avoid code contamination.
+The library is a headers-only library 
+- Definition of Numeric concept which constraints templates to arithmetic types such integer or float, and their derivatives.
+- Definition of a Point:
+    - a point is a bundle of n coordinates 
+    - special case 2D point  
 
 #### Tools
 A classic boring tools library
@@ -24,8 +31,3 @@ it collects some useful features:
 in one way or another like the standard algorithm library, only collects some geometric manipulation features 
 - implementation of the factorial template meta-programming 
 - implementation of the binomial coefficient using the multiplicative formula
-- Definition of a Point:
-    - a point is a bundle of n coordinates 
-    - special case 2D point  
-
-
