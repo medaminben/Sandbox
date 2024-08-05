@@ -45,7 +45,7 @@ namespace Sandbox { namespace Tools {
          return the_string.substr(the_string.find_first_of(the_char), the_string.end());
     };
 
-    std::string remove_from_line_breack_impl(std::string const& the_string);
+    std::string remove_from_line_break_impl(std::string const& the_string);
     std::string remove_from_whitespace_impl(std::string const& the_string);
 
     TableResult parse_csv_file_impl( const std::string& file_name,

@@ -26,7 +26,7 @@ namespace Sandbox { namespace Tools {
     /////////////// misc stuff ///////////////////////
     //////////////////////////////////////////////////    
     Result<std::string> 
-    SANDBOX_TOOLS_API remove_from_line_breack(const char* sentence);
+    SANDBOX_TOOLS_API remove_from_line_break(const char* sentence);
     Result<std::string> 
     SANDBOX_TOOLS_API remove_from_whitespace(const char* sentence);
 }}
