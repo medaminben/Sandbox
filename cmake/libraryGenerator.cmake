@@ -57,4 +57,6 @@ function(generate_library)
 
     configure_file(${gen_DIR}/test_lib.cpp.in 
                     ${lib_test_DIR}/src/test_${lib_NAME}.cpp)
+    configure_file(${gen_DIR}/dummy 
+                    ${lib_test_DIR}/data/samples_${lib_NAME}.txt)
 endfunction()

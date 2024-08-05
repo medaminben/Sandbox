@@ -25,7 +25,7 @@ set(TARGET_SOURCES
 
 set(TARGET_RSC
     # resources 
-    test/data/${VAR_MARKER_START}TARGET_NAME${VAR_MARKER_END}TestData.txt
+    test/data/samples_${VAR_MARKER_START}TARGET_NAME${VAR_MARKER_END}.txt
 )
 
 ##dependencies
