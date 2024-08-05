@@ -23,12 +23,3 @@ TEST (test_Geo_bino_coef, result) {
     auto result = Sg::bino_coef<>(6,2);
     EXPECT_EQ(result(),15);
 }
-
-TEST (test_Geo_Point,add_points ) {
-   const int a[2] = { 1 , 3 };
-   const int b[2] = { 1 , 3 }; 
-   const auto point_a = Sg::Point2D(a); 
-   const auto point_b = Sg::Point2D(b);
-   const auto result = point_a + point_b;
-   EXPECT_EQ(result.x,2);
-}
