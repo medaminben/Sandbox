@@ -25,7 +25,6 @@ set(TARGET_SOURCES
 
 set(TARGET_RSC
     # resources
-    test/data/samples_${TARGET_NAME}.txt
 )
 
 ##dependencies
