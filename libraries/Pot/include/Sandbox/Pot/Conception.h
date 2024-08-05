@@ -34,12 +34,12 @@ template <typename P> struct access<P, 1> {
     static constexpr Numeric auto get(P const& p) noexcept { return p.y; }  
 };
 template <typename P> struct access<P, 2> { 
-    static constexpr Numeric auto get(P const& p) { return p.z; }  
+    static constexpr Numeric auto get(P const& p) noexcept { return p.z; }  
 };
 
 
 template <int D, typename P> 
-constexpr inline auto get(P const& p) { return access<P, D>::get(p); } 
+constexpr auto get(P const& p) { return access<P, D>::get(p); } 
 
 }}
 
