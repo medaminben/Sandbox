@@ -13,6 +13,8 @@ set(TARGET_HEADERS
     # kind of path: #include <CMAKE_ROOT_NAME/PROJECT_NAME/...>
     include/${CMAKE_ROOT_NAME}/${TARGET_NAME}/${TARGET_NAME}.h
     include/${CMAKE_ROOT_NAME}/${TARGET_NAME}/INIfile.h
+    include/${CMAKE_ROOT_NAME}/${TARGET_NAME}/Conception.h
+    include/${CMAKE_ROOT_NAME}/${TARGET_NAME}/Point.h
 )
 
 set(LIBRARY_ALIAS ${CMAKE_ROOT_NAME}::${TARGET_NAME})
