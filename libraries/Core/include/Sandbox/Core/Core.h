@@ -5,6 +5,7 @@
 #include <string>
 #include <exception>
 #include <memory>
+static_assert(sizeof(void *) == 8, "expected 64-bit platform");
 namespace Sandbox { namespace Core {
     /**
     * @brief 
