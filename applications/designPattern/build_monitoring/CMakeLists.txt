@@ -57,7 +57,7 @@ set(PROJECT_LIST
 #################################################
 # executable 
 #################################################
-set(EXECUTABLE_NAME ct_vs_rt_2)
+set(EXECUTABLE_NAME const_versus_constexpr)
 add_project(${EXECUTABLE_NAME} EXEC_LIST) # add_guard
 
 set(BUILD_${EXECUTABLE_NAME} 
@@ -78,7 +78,7 @@ set(${EXECUTABLE_NAME}_HEADERS
 
 # source files
 set(${EXECUTABLE_NAME}_SOURCES
-    ${THIS_DIR}/ct_vs_rt_2.cpp
+    ${THIS_DIR}/const_versus_constexpr.cpp
     ${THIS_DIR}/constants.cpp
     PARENT_SCOPE
 )
