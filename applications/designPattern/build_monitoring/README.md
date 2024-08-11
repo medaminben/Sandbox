@@ -18,6 +18,10 @@ To take away:
 - const entities can be initialized either at compile-time or run-time.They can be shared among different translation units such as (.cpp) files; using the extern keyword.
 - constexpr entities should be always initialized at compile-time, and can not be shared among different translation units.
 
-
-
 ![output_const_vs_constexpr](https://github.com/user-attachments/assets/016863bb-dd1e-44c3-8c8b-e1a72a572e85)
+
+## non_typed_class_template : sum function in different flavors
+3 types of implementatio of the sum function:
+- iteratif using for loop
+- recursif using selfcall sum(x) = x + sum(x-1) 
+- non typed class template that constructs the value by accumulation using recursive constructor call
