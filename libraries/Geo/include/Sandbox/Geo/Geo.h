@@ -79,12 +79,15 @@ namespace Sandbox { namespace Geo {
     template<Sp::Numeric T>
     auto inline reducePoint(Sp::Point2D<T> const& p) noexcept 
     { 
-        const float g = Sandbox::Geo::gcd(p.y,p.x); 
+        const auto x = Sp::get<0>(p);
+        const auto y = Sp::get<1>(p);
+        const float g = Sandbox::Geo::gcd(y,x); 
         if(g != 0) {
-            auto r = Sp::Point2D<float>(0); 
-            r.x = ((p.x < 0) ? -1 : 1) * (abs(p.x) / g);
-            r.y = ((p.y < 0) ? -1 : 1) * (abs(p.y) / g); 
-            return Result<Sp::Point2D<float>>(r);
+            float pt[2] = {
+                ((x < 0) ? -1 : 1) * (abs(x) / g),
+                ((y < 0) ? -1 : 1) * (abs(y) / g)
+            };
+            return Result<Sp::Point2D<float>>(pt);
         }
         else 
             return Result<Sp::Point2D<float>>(Sc::Error<>("gcd is 0 \n"));

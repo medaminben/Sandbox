@@ -23,3 +23,12 @@ TEST (test_Geo_bino_coef, result) {
     auto result = Sg::bino_coef<>(6,2);
     EXPECT_EQ(result(),15);
 }
+
+TEST (test_Geo_reduce_Point, result) {
+    float pt[2] = { 45 , 15};
+    auto my_point = Sp::Point2D(pt);
+    auto result = Sg::reducePoint(my_point);
+    std:: cout <<" result: - x: " << Sp::get<0>(result()) 
+    << " | y: " << Sp::get<1>(result()) << " \n";
+    EXPECT_EQ(Sp::get<0>(result()),3);
+}
