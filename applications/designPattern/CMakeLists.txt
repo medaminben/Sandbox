@@ -7,6 +7,7 @@ add_subdirectory(CommandPattern)
 add_subdirectory(StatePattern)
 add_subdirectory(ObserverPattern)
 add_subdirectory(mvc)
+add_subdirectory(ct_vs_rt)
 #################################################
 # Build all the subprojects
 #################################################
