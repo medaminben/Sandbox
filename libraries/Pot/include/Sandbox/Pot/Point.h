@@ -6,116 +6,88 @@
 #include <stdint.h>
 #include "Conception.h"
 namespace Sandbox { namespace Pot {
+
 // Point<T,n>
 /**
 * @brief  Point<T,n> basic_point template: container for any dimensional point
 * container for any dimensional point
-* @tparam T   a numeric type of the coordinates
-* @tparam dim dimensions 
+* @param T   a numeric type of the coordinates
+* @param dim dimensions 
 */
-template<Numeric T, size_t dim = 2> 
+template<Numeric numeric_type, size_t size> 
 struct basic_point {
+private:
     // attribute
-    std::array<T,dim> array;
+    std::vector<numeric_type> vec{};
     //miscs
-    constexpr inline void copy( basic_point const& p ) noexcept { 
-        // for noexcept 
-        std::copy(p.array.begin(), p.array.end(), array.begin()); 
+    constexpr void copy( basic_point<numeric_type,size> const& p) noexcept { 
+        vec.clear();
+        std::copy(p.vec.begin(), p.vec.end(), std::back_inserter(vec));              
     }
-    constexpr inline void copy( auto const (&p)[dim] ) noexcept { 
-       
-
-        std::copy(p, p + dim, array.begin());
+    constexpr void copy( Numeric auto const (&p)[size] ) noexcept { 
+         for (decltype(size) i = 0; i < size;  i++) vec[i] = p[i];
     }
-    constexpr inline void copy( auto const& val ) noexcept { 
-        for (auto& a : array) 
-            a = val;                            
+    constexpr void copy( Numeric auto const& val ) noexcept { 
+        for (decltype(size) i = 0; i < size;  i++) vec[i] = val;                             
     }
 public:
     ///ctors
     /*new ctor*/
-    constexpr inline basic_point( T const (&pnt)[dim] ) noexcept { 
-        copy(pnt); 
+    constexpr  basic_point( numeric_type const (&pnt)[size] ) noexcept { 
+        vec.assign(size, 0); copy(pnt); 
     }
     /*copy ctor*/
-    constexpr inline basic_point( basic_point<T,dim> const& pnt ) noexcept { 
-        copy(pnt);  
+    constexpr  basic_point( basic_point< numeric_type, size > const& pnt ) noexcept { 
+        copy(pnt); 
     }
     /*default ctor*/
-    constexpr inline basic_point( T dot = 0 ) noexcept { 
-        copy(dot); 
+    constexpr  basic_point( numeric_type dot = 0 ) noexcept { 
+        vec.assign(size, 0); copy(dot);
     }
-    virtual ~basic_point() = default ;
+    /*default dector */
+    virtual   ~basic_point() = default ;
     //operators
-    constexpr inline auto operator+=( basic_point<T,dim> const& o ) noexcept { 
-        for(size_t i = 0; i < dim;i++) 
-            array[i] += o.array[i]; 
+    constexpr auto operator+=( basic_point< numeric_type, size > const& o ) noexcept { 
+        for( size_t i = 0; i < size; i++ ) vec[i] += o.vec[i];
     }
-    constexpr inline auto operator-=( basic_point<T,dim> const& o ) noexcept { 
-        for(size_t i = 0; i < dim;i++) 
-            array[i] -= o.array[i]; 
+    constexpr auto operator-=( basic_point< numeric_type, size > const& o ) noexcept { 
+        for( size_t i = 0; i < size; i++ ) vec[i] -= o.vec[i];
     }
-    friend constexpr inline auto operator+( basic_point<T,dim> const& a, 
-                                            basic_point<T,dim> const& b ) noexcept { 
-        basic_point<T,dim> sum{a};  
-        sum  += b; 
-        return sum;     
+    friend constexpr auto operator+( basic_point< numeric_type, size > const& a, 
+                                     basic_point< numeric_type, size > const& b ) noexcept { 
+        basic_point< numeric_type, size > sum{a}; sum  += b; return sum;     
     }
-    friend constexpr inline auto operator-( basic_point<T,dim> const& a, 
-                                            basic_point<T,dim> const& b ) noexcept { 
-        basic_point<T,dim> rest{a}; 
-        rest -= b; 
-        return rest;    
+    friend constexpr auto operator-( basic_point< numeric_type, size > const& a, 
+                                     basic_point< numeric_type, size>  const& b ) noexcept { 
+        basic_point< numeric_type, size > rest{a}; rest -= b; return rest;
     }
+private:
+    template < size_t dimension, Numeric point_type, size_t point_size > friend struct access;
+    template < Numeric point_type, size_t point_size >                   friend struct basic_point;
 };
 
-//Point2D<T>
-/**
- * @brief special point case 2 dimesional
- * 
- * @tparam T a numeric type of the coordinates
- */
-template<Numeric T = size_t > 
-struct Point2D {
-public:
-    // attributes
-    basic_point<T,2> data = basic_point<T,2>(0);
-    T& x = data.array[0];
-    T& y = data.array[1];
+// getters through access 
 
-    //ctors
-    constexpr inline Point2D ( T const p ) noexcept { 
-        data.copy(p); 
-    }
-    constexpr inline Point2D ( T const (&p)[2]  ) noexcept { 
-        data.copy(p); 
-    }
-    constexpr inline Point2D ( Point2D const& o ) noexcept { 
-        data.copy(o.data); 
-    }
-
-    //operators
-    constexpr inline auto operator+=( Point2D const& o ) noexcept { 
-        data += o.data; 
-    }
-    constexpr inline auto operator-=( Point2D const& o ) noexcept { 
-        data -= o.data; 
-    }
-
-    friend constexpr inline auto operator+( Point2D const& a, 
-                                            Point2D const& b ) noexcept { 
-        Point2D sum(a);  
-        sum += b; 
-        return  sum;
-    }
-    friend constexpr inline auto operator-( Point2D const& a, 
-                                            Point2D const& b ) noexcept { 
-        Point2D rest(a); 
-        rest -= b; 
-        return rest;
-    }
+template<size_t dimension, Numeric point_type, size_t point_size>
+struct access 
+     : is_accessible<dimension,point_size> {
+    // the accessor as a basic_point friend is allowed to grab the values
+    static constexpr Numeric 
+    auto get_v(basic_point<point_type, point_size > const& point) noexcept { 
+        return point.vec[dimension]; 
+    } 
 };
 
+template<size_t dimension, Numeric point_type, size_t point_size> 
+constexpr Numeric 
+auto get(basic_point< point_type, point_size> const& point) noexcept { 
+    return access< dimension, point_type, point_size >::get_v(point); 
+};
 
-}}
+// Aliasing
+template<Numeric T> using Point2D = basic_point<T,2>;
+
+}}// end of namespaces
+
+
 #endif // POINT_H
