@@ -7,7 +7,7 @@ add_subdirectory(CommandPattern)
 add_subdirectory(StatePattern)
 add_subdirectory(ObserverPattern)
 add_subdirectory(mvc)
-add_subdirectory(build_monitoring)
+add_subdirectory(metaprogramming)
 #################################################
 # Build all the subprojects
 #################################################
