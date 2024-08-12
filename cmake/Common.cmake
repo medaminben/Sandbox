@@ -30,6 +30,21 @@ if(CMAKE_COMPILER_IS_GNUCXX
     )
 endif()
 
+# ping google 
+if(UNIX)
+    execute_process( COMMAND ping www.github.com -c 2 OUTPUT_QUIET RESULT_VARIABLE NO_CONNECTION)
+else()
+    execute_process(COMMAND ping www.github.com -n 2 OUTPUT_QUIET RESULT_VARIABLE NO_CONNECTION )
+endif()
+
+if(NO_CONNECTION EQUAL 0)
+    set(FETCHCONTENT_FULLY_DISCONNECTED OFF)
+    message("Fetch online mode... ")   
+else()
+    set(FETCHCONTENT_FULLY_DISCONNECTED ON)
+    message("Fetch offline mode: no intenet connection requires already populated _deps to build properly!" )
+endif()
+
 if(BUILD_TESTING)
     print(BUILD_TESTING)
     include(CTest)
