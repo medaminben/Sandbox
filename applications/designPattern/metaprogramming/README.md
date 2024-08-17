@@ -31,3 +31,6 @@ Different implementations of the prime number function
 
 ## constexpr_tuple : std::tuple
 Practice manipulation of tuple objects
+
+## mpl_traits :  
+Template functions using policies and traits
