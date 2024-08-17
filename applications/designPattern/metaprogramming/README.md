@@ -34,3 +34,6 @@ Practice manipulation of tuple objects
 
 ## mpl_traits :  
 Template functions using policies and traits
+
+## construct_validation : default constructor validation
+How to check default constructor is available
