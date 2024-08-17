@@ -40,3 +40,7 @@ How to check default constructor is available
 
 ## generic_lambda : 
 How to check default constructor is available using lambda functions
+
+
+## type_constraint : the modulo type issue
+an naive example of use of the constraints strategy offered by the modern standard like type_traits check and concepts

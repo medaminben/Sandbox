@@ -124,3 +124,17 @@ set(${EXECUTABLE_NAME}_SOURCES
     PARENT_SCOPE
 )
 set(PROJECT_LIST ${PROJECT_LIST} ${EXEC_LIST} PARENT_SCOPE)
+#################################################
+# executable type_constraints
+#################################################
+set(EXECUTABLE_NAME type_constraints)
+add_project(${EXECUTABLE_NAME} EXEC_LIST) # add_guard
+set(BUILD_${EXECUTABLE_NAME} ${BUILD_APPS}  PARENT_SCOPE)
+# executable type 
+set(${EXECUTABLE_NAME}_ENTRY  Console PARENT_SCOPE)
+# source files
+set(${EXECUTABLE_NAME}_SOURCES
+    ${THIS_DIR}/type_constraints.cpp
+    PARENT_SCOPE
+)
+set(PROJECT_LIST ${PROJECT_LIST} ${EXEC_LIST} PARENT_SCOPE)
