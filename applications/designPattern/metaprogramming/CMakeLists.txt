@@ -143,3 +143,17 @@ set(${EXECUTABLE_NAME}_SOURCES
     PARENT_SCOPE
 )
 set(PROJECT_LIST ${PROJECT_LIST} ${EXEC_LIST} PARENT_SCOPE)
+#################################################
+# executable variant_type
+#################################################
+set(EXECUTABLE_NAME variant_type)
+add_project(${EXECUTABLE_NAME} EXEC_LIST) # add_guard
+set(BUILD_${EXECUTABLE_NAME} ${BUILD_APPS}  PARENT_SCOPE)
+# executable type 
+set(${EXECUTABLE_NAME}_ENTRY  Console PARENT_SCOPE)
+# source files
+set(${EXECUTABLE_NAME}_SOURCES
+    ${THIS_DIR}/variant_type.cpp
+    PARENT_SCOPE
+)
+set(PROJECT_LIST ${PROJECT_LIST} ${EXEC_LIST} PARENT_SCOPE)
