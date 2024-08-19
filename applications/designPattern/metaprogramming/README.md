@@ -45,5 +45,5 @@ update: moved the lambda valid to proper header file
 ## type_constraint : the modulo type issue
 an naive example of use of the constraints strategy offered by the modern standard like type_traits check and concepts
 
-## variant_type : the modulo type issue
+## variant_type : 
 some practice implementation to test the power of variant class
