@@ -3,7 +3,10 @@
 #include <type_traits>
 
 
-class NonConstructible {private: NonConstructible();};
+class NonConstructible {
+    private: 
+    NonConstructible();
+};
 class Constructible {};
 
 template<typename T>
@@ -22,7 +25,8 @@ public:
 };
 //
 template<typename T> 
-struct IsDefaultConstructibleT : IsDefaultConstructible<T>::Type{};
+struct IsDefaultConstructibleT 
+     : IsDefaultConstructible<T>::Type{};
 
 
 // primary template:
@@ -30,7 +34,9 @@ template<typename, typename = std::void_t<>>
 struct HasDefaultConstructor : std::false_type {};
 // partial specialization (may be SFINAE'd away):
 template<typename T>
-struct HasDefaultConstructor<T, std::void_t<decltype(T())> > : std::true_type{};
+struct HasDefaultConstructor<T, 
+                             std::void_t<decltype(T())>> 
+     : std::true_type{};
 
 int main() {
 // boolalpha to print true and false as litteral

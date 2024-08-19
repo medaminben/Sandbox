@@ -11,16 +11,35 @@ T accum(T const* start,
     return result;
 }
 // traits
-template<typename T> 
-           struct AccumulationTraits;
-template<> struct AccumulationTraits<char>           { using AccT = int;     static constexpr AccT const zero = 0;   };
-template<> struct AccumulationTraits<short>          { using AccT = int;     static constexpr AccT const zero = 0;   };
-template<> struct AccumulationTraits<int>            { using AccT = long;    static constexpr AccT const zero = 0;   };
-template<> struct AccumulationTraits<unsigned int>   { using AccT = unsigned long;                                   };
-template<> struct AccumulationTraits<float>          { using AccT = double;  static constexpr AccT const zero = 0.0f;};
+template<typename T> struct AccumulationTraits;
+template<> 
+struct AccumulationTraits<char> {
+     using AccT = int;     
+     static constexpr AccT const zero = 0;   
+};
+template<> 
+struct AccumulationTraits<short> { 
+    using AccT = int;     
+    static constexpr AccT const zero = 0;   
+};
+template<> 
+struct AccumulationTraits<int> { 
+    using AccT = long;    
+    static constexpr AccT const zero = 0;   
+};
+template<> 
+struct AccumulationTraits<unsigned int> { 
+    using AccT = unsigned long;                                   
+};
+template<> 
+struct AccumulationTraits<float> { 
+    using AccT = double;  
+    static constexpr AccT const zero = 0.0f;
+};
 
 template<typename T>
-auto accum_traits(T const* start, T const* end  )   {
+auto accum_traits(T const* start, 
+                  T const* end  ) {
     using AccT = typename AccumulationTraits<T>::AccT;
     AccT result{ AccumulationTraits<T>::zero }; 
     while(start != end) {
@@ -31,16 +50,52 @@ auto accum_traits(T const* start, T const* end  )   {
 }
 
 template<typename T> 
-           struct AccumulationTraits_2;
-template<> struct AccumulationTraits_2<char>         { using AccT = int;           static constexpr AccT zero() {return 0;}};
-template<> struct AccumulationTraits_2<short>        { using AccT = int;           static constexpr AccT zero() {return 0;}};
-template<> struct AccumulationTraits_2<int>          { using AccT = long;          static constexpr AccT zero() {return 0;}};
-template<> struct AccumulationTraits_2<unsigned int> { using AccT = unsigned long; static constexpr AccT zero() {return 0;}};
-template<> struct AccumulationTraits_2<float>        { using AccT = double;        static constexpr AccT zero() {return 0;}};
+struct AccumulationTraits_2;
+template<> 
+struct AccumulationTraits_2<char> { 
+    using AccT = int;           
+    static constexpr 
+    AccT zero() {
+        return 0;
+    }
+};
+template<> 
+struct AccumulationTraits_2<short> { 
+    using AccT = int;           
+    static constexpr 
+    AccT zero() {
+        return 0;
+    }
+};
+template<> 
+struct AccumulationTraits_2<int> { 
+    using AccT = long;
+    static constexpr 
+    AccT zero() {
+        return 0;
+    }
+};
+template<> 
+struct AccumulationTraits_2<unsigned int> { 
+    using AccT = unsigned long; 
+    static constexpr 
+    AccT zero() {
+        return 0;
+    }
+};
+template<> 
+struct AccumulationTraits_2<float> { 
+    using AccT = double;        
+    static constexpr 
+    AccT zero() {
+        return 0;
+    }
+};
 
 template<typename T, 
          typename AT = AccumulationTraits_2<T>>
-auto accum_traits_2(T const* start, T const* end  )   {
+auto accum_traits_2(T const* start, 
+                    T const* end  )   {
     typename AT::AccT result = AT::zero(); 
     while(start != end) {
         result  += *start;
@@ -50,14 +105,37 @@ auto accum_traits_2(T const* start, T const* end  )   {
 }
 
 struct own_type{};
-template<> struct AccumulationTraits<own_type>   { using AccT = own_type; inline static const AccT zero = own_type{};};
-template<> struct AccumulationTraits_2<own_type> { using AccT = own_type; static AccT zero() {return own_type{};}    };
+template<> 
+struct AccumulationTraits<own_type>   { 
+    using AccT = own_type; 
+    inline static const 
+    AccT zero = own_type{};
+};
+template<> 
+struct AccumulationTraits_2<own_type> { 
+    using AccT = own_type; 
+    static AccT zero() {
+        return own_type{};
+    }    
+};
 
-struct sum_policy  { template<typename T1, typename T2> static void accumulate(T1& result, T2 const& value) {result += value;} };
-struct mult_policy { template<typename T1, typename T2> static void accumulate(T1& result, T2 const& value) {result *= value;} };
+struct sum_policy  { 
+    template<typename T1, typename T2> 
+    static void accumulate(T1& result, 
+                           T2 const& value) {
+        result += value;
+    } 
+};
+struct mult_policy { 
+    template<typename T1, typename T2> 
+    static void accumulate(T1& result, 
+                           T2 const& value) {
+        result *= value;
+    } 
+};
 
 template<typename T, 
-         typename Pilicy = sum_policy, 
+         typename Pilicy  = sum_policy, 
          typename Traits  = AccumulationTraits_2<T>>
 auto accum_policy(T const* start, T const* end){
     using AccT = typename Traits::AccT;
