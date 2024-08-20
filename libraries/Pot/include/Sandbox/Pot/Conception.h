@@ -11,7 +11,8 @@ namespace Sandbox { namespace Pot {
  * template type guard for numeric types
  * @param numeric_type type to assert
  */
-template<class numeric_type> concept Numeric = requires(numeric_type param) 
+template<class numeric_type> 
+concept Numeric = requires(numeric_type param) 
 {
     requires  std::is_integral_v<numeric_type> 
            || std::is_floating_point_v<numeric_type>;

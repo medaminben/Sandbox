@@ -22,20 +22,29 @@ namespace Sandbox { namespace Pot {
 struct iniFile {
     // own containers
     struct Section { 
-
         struct Property{
-            constexpr Property(std::string const& k,  std::string const& v) : _key(k),_value(v) {};
-            constexpr std::string_view value() const { return _value; }
-            constexpr std::string_view key()   const { return _key;   }
+            constexpr Property(std::string const& k,  
+                               std::string const& v) 
+                : _key(k),_value(v) {};
+            constexpr std::string_view value() const { 
+                return _value; 
+            }
+            constexpr std::string_view key() const { 
+                return _key;   
+            }
         private:
             std::string _key{}, _value{};
         };
 
         constexpr Section(std::string const& name = Sc::unknown)
-                                                        : _label(name){};
+                    : _label(name){};
 
-        constexpr std::string_view label() const { return _label;      }
-        constexpr auto        properties() const { return _properties; }
+        constexpr std::string_view label() const { 
+            return _label;      
+        }
+        constexpr auto properties() const { 
+            return _properties; 
+        }
     private:
         std::string           _label{}; 
         std::vector<Property> _properties{};
