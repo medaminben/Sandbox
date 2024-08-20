@@ -8,7 +8,6 @@
 #include <cmath>
 #include <utility>
 namespace Sandbox { namespace Geo {
-
     /**
      * @brief 
      * Calculates the factorial of a number
@@ -17,22 +16,31 @@ namespace Sandbox { namespace Geo {
      * \endcode
      * @param N the number
      */
-     template<size_t N> struct factorial { 
-        enum { is = N * factorial<N-1>::is };
+     template<size_t N> 
+     struct factorial { 
+        enum { 
+            is = N * factorial<N-1>::is 
+        };
     };
     template<>
     struct factorial<0> { 
-        enum { is = 1 };
+        enum { 
+            is = 1
+        };
     };
 
     /**
      * @brief 
-     * This template calculates the binomial coefficient using the multiplicative formula 
+     * This template calculates the binomial coefficient 
+     * using the multiplicative formula 
      * 
-     * The function takes two parameters, "items" and "to_choose", and returns the binomial coefficient as a result.
-     * The function first checks if to_choose is greater than items, then, it checks if to_choose is greater than half of items, 
-     * in which case it swaps to_choose with (items - to_choose) to avoid the overflow.
-     * The function then calculates the binomial coefficient using a loop that iterates from 1 to to_choose. 
+     * The function takes two parameters, "items" and "to_choose", 
+     * and returns the binomial coefficient as a result.
+     * The function first checks if to_choose is greater than items, 
+     * then, it checks if to_choose is greater than half of items, 
+     * in which case it swaps to_choose with (items - to_choose) 
+     * to avoid the overflow. The function then calculates the binomial 
+     * coefficient using a loop that iterates from 1 to to_choose. 
      * 
      * @param T integral type 
      * @param items total number of items 
@@ -40,13 +48,16 @@ namespace Sandbox { namespace Geo {
      * @return Result<float>
      */
     //template <Sp::Numeric T = size_t>
-    constexpr auto inline bino_coef(Sp::Numeric auto items, 
-                                    Sp::Numeric auto to_choose) noexcept 
-    {
+    inline constexpr auto  
+    bino_coef(Sp::Numeric auto items, 
+              Sp::Numeric auto to_choose) 
+    noexcept {
         float result{1};
         // checks if to_choose more than items 
         if ( to_choose > items ) { 
-            return Result<float>(Sc::Error<>(" to_choose more than the given items, try to swap the arguments"));   
+            return Result<float>( Sc::Error<>(
+     " to_choose more than the given items, try to swap the arguments"
+                    ));   
         }  
         // check the middle to avoid the overflow
         if ((2 * to_choose) > items) { 
@@ -59,6 +70,7 @@ namespace Sandbox { namespace Geo {
         }   
         return Result<float>(result);
     }
+
     /**
      * @brief Greatest Common Divisor
      * 
@@ -66,31 +78,64 @@ namespace Sandbox { namespace Geo {
      * @param b Numeric type
      * @return  gcd as size_t value  
      */
-    constexpr const auto inline gcd(Sp::Numeric auto const a, 
-                                    Sp::Numeric auto const b) noexcept 
-    {   // convert the arguments to a positive integer
+    inline constexpr const auto  
+    gcd(Sp::Numeric auto const a, 
+        Sp::Numeric auto const b) 
+    noexcept {   
+        // convert the arguments to a positive integer
         auto _a = (size_t) std::floor(std::abs(a));
         auto _b = (size_t) std::floor(std::abs(b));
         auto _temp =_b;
-        while(true) { if(_b==0) return _a;
-            _temp = _b; _b = _a % _b; _a = _temp;
+        while(true) { 
+            if(_b==0) // escape clause
+                return _a;
+
+            _b    = _a % _b; 
+            _a    = _temp;
+            _temp = _b;
         };
     } 
+
     template<Sp::Numeric T>
-    auto inline reducePoint(Sp::Point2D<T> const& p) noexcept 
-    { 
-        const auto x = Sp::get<0>(p);
-        const auto y = Sp::get<1>(p);
+    Result<Sp::Point2D<float>> inline 
+    reducePoint(Sp::Point2D<T> const& p) 
+    noexcept { 
+        const auto  x = Sp::get<0>(p);
+        const auto  y = Sp::get<1>(p);
         const float g = Sandbox::Geo::gcd(y,x); 
         if(g != 0) {
             float pt[2] = {
                 ((x < 0) ? -1 : 1) * (abs(x) / g),
                 ((y < 0) ? -1 : 1) * (abs(y) / g)
             };
-            return Result<Sp::Point2D<float>>(pt);
+            return 
+                Result<Sp::Point2D<float>>(pt);
         }
         else 
-            return Result<Sp::Point2D<float>>(Sc::Error<>("gcd is 0 \n"));
+            return 
+                Result<Sp::Point2D<float>>(
+                     Sc::Error<>("gcd is 0 \n"));
+    }
+
+    
+    // Function to calculate distance
+    inline constexpr Sp::Numeric auto 
+    distance(Sp::Numeric auto const& x1, Sp::Numeric auto const& y1, 
+            Sp::Numeric auto const& x2, Sp::Numeric auto const& y2)
+    noexcept {
+        return 
+            std::sqrt( std::pow((x2 - x1), 2) 
+                    + std::pow((y2 - y1), 2) );
+    }
+    // Function template to calculate distance
+    // between 2 points 
+    template<Sp::Numeric T>
+    inline constexpr Sp::Numeric auto 
+    distance(Sp::Point2D<T> const& a, 
+             Sp::Point2D<T> const& b)
+    noexcept {
+        return distance(Sp::get<0>(a), Sp::get<1>(a),
+                        Sp::get<0>(b), Sp::get<1>(b));
     }
 }}
 namespace Sg = Sandbox::Geo;

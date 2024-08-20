@@ -31,3 +31,6 @@ it collects some useful features:
 in one way or another like the standard algorithm library, only collects some geometric manipulation features 
 - implementation of the factorial template meta-programming 
 - implementation of the binomial coefficient using the multiplicative formula
+- implementation of gcd function template 
+- implementation of reducePoint function template which reduces a point to its gcd value
+- implementation of distance function template which return  the distance between 2 2D points using the Pythagorean formula. 

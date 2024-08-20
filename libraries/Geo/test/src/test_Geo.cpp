@@ -32,3 +32,23 @@ TEST (test_Geo_reduce_Point, result) {
     << " | y: " << Sp::get<1>(result()) << " \n";
     EXPECT_EQ(Sp::get<0>(result()),3);
 }
+TEST (test_Geo_distance_Point, result_zero) {
+    float a_pt[2] = { 45 , 15};
+    float b_pt[2] = { 45 , 15};
+    auto a_point = Sp::Point2D(a_pt);
+    auto b_point = Sp::Point2D(b_pt);
+    auto result  = Sg::distance(a_point, b_point);
+    std:: cout <<" distance between a and b : " << result
+    << " \n";
+    EXPECT_EQ(result,0);
+}
+TEST (test_Geo_distance_Point, result) {
+    float a_pt[2] = { 45 , 15};
+    float b_pt[2] = { 0 , 0};
+    auto a_point = Sp::Point2D(a_pt);
+    auto b_point = Sp::Point2D(b_pt);
+    auto result  = Sg::distance(a_point, b_point);
+    std:: cout <<" distance between a and b : " << result
+    << " \n";
+    EXPECT_LE(result - 47.434164, 0.00001);
+}
