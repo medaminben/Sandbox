@@ -7,7 +7,7 @@
 #include <array>
 #include <concepts>
 // Test case names must start with the name of the executable they are
-// contained in, in this case, "test_core"
+// contained in, in this case, "test_Geo"
 TEST (test_Geo_factorial, result) {
     // no use of Result<..> class cause it never fails
     auto result = Sg::factorial<5>::is;
