@@ -39,4 +39,5 @@ in one way or another like the standard algorithm library, only collects some ge
 [Codility](https://app.codility.com/programmers/trainings/) is a platform of technical assessment.
 in the library the solution to all public tasks in the programmer training page. 
 all rights of concept of the execices is owned by Codility. 
+go straight to the implementation file of the solution [here](https://github.com/medaminben/Sandbox/blob/master/libraries/Codility/src/Codility_impl.cpp) 
 
