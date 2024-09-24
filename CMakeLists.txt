@@ -34,6 +34,7 @@ set(libraries_list
         Pot
         Tools
         Geo
+        Codility
 ) 
 set(libraries_dir ${CMAKE_SOURCE_DIR}/libraries)
 set(template_dir  ${CMAKE_SOURCE_DIR}/template )
