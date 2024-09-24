@@ -1,5 +1,5 @@
-#ifndef Codility_IMPL_H
-#define Codility_IMPL_H
+#ifndef CODILITY_IMPL_H
+#define CODILITY_IMPL_H
 #include <vector>
 #include <string>
 namespace Sandbox { namespace Codility {
@@ -251,4 +251,4 @@ namespace Sandbox { namespace Codility {
 
 }}
 
-#endif // Codility_IMPL_H
+#endif // CODILITY_IMPL_H

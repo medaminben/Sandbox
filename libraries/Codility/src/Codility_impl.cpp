@@ -93,8 +93,11 @@ namespace Sandbox { namespace Codility {
     // https://app.codility.com/programmers/lessons/3-time_complexity/frog_jmp/
     int JumpingFrog(int X, int Y, int D) {
         auto distance  = Y - X;
+
         auto steps     = distance / D;
+
         auto remaining = distance % D;
+
         if(remaining != 0) steps++;
         return steps;
     }
@@ -133,14 +136,14 @@ namespace Sandbox { namespace Codility {
     int FrogRiver(int X, std::vector<int> &A)  {
         std::unordered_set<int> st{};
 
-        for(int i = 1; i <= X ;i++) 
-                        st.emplace(i);
+        for(int i = 1; i <= X ;i++) st.emplace(i);
 
         for(size_t i = 0; i < A.size() ;i++) 
             if( st.contains(A[i])) {
                 st.erase(A[i]);
                 if( st.empty()) return i; 
             } 
+            
         return -1;
     }
 
