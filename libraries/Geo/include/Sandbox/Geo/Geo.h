@@ -64,7 +64,7 @@ namespace Sandbox { namespace Geo {
             // take the difference to the number to choose
             to_choose = items - to_choose; 
         }       
-        auto i = to_choose;
+        decltype(to_choose) i; 
         for (i = 1; i <= to_choose; i++) { 
             result *= ((float) items + 1 - i) / i; 
         }   
@@ -102,8 +102,7 @@ namespace Sandbox { namespace Geo {
     noexcept { 
         const auto  x = Sp::get<0>(p);
         const auto  y = Sp::get<1>(p);
-        const float g = Sandbox::Geo::gcd(y,x); 
-        if(g != 0) {
+        if(const float g = Sandbox::Geo::gcd(y,x)) {
             float pt[2] = {
                 ((x < 0) ? -1 : 1) * (abs(x) / g),
                 ((y < 0) ? -1 : 1) * (abs(y) / g)
@@ -111,10 +110,7 @@ namespace Sandbox { namespace Geo {
             return 
                 Result<Sp::Point2D<float>>(pt);
         }
-        else 
-            return 
-                Result<Sp::Point2D<float>>(
-                     Sc::Error<>("gcd is 0 \n"));
+        else return Sc::Error<>("gcd is 0 \n");
     }
 
     
@@ -125,7 +121,7 @@ namespace Sandbox { namespace Geo {
     noexcept {
         return 
             std::sqrt( std::pow((x2 - x1), 2) 
-                    + std::pow((y2 - y1), 2) );
+                     + std::pow((y2 - y1), 2) );
     }
     // Function template to calculate distance
     // between 2 points 
@@ -137,6 +133,35 @@ namespace Sandbox { namespace Geo {
         return distance(Sp::get<0>(a), Sp::get<1>(a),
                         Sp::get<0>(b), Sp::get<1>(b));
     }
+        // Function template to calculate distance
+    // between 2 points 
+    template<Sp::Numeric T>
+    inline constexpr Sp::Numeric auto 
+    std_distance(Sp::Point2D<T> const& a, 
+                 Sp::Point2D<T> const& b)
+    noexcept {
+        return std::hypot(Sp::get<0>(b) - Sp::get<0>(a),
+                          Sp::get<1>(b) - Sp::get<1>(a));
+    }
+
+    template<Sp::Numeric T>
+    inline constexpr std::pair<int, int> 
+    nearestNeighbor(std::vector<Sp::Point2D<T>> const& points, 
+                    Sp::Point2D<T>              const& current) {
+        Sp::Numeric auto minDist      = INT_MAX;
+        Sp::Numeric auto nearestIndex = -1;
+        decltype(std::declval<points.size()>()) i;
+        for (i = 0 ; i < points.size(); i++) 
+            if (i != Sp::get<0>(current)) { // <-- skip current point
+                auto dist = std_distance(current, points[i] );
+                if (dist < minDist) {
+                    minDist      = dist;
+                    nearestIndex = i;
+                }
+            }; 
+        return {nearestIndex, minDist};
+    }
 }}
+
 namespace Sg = Sandbox::Geo;
 #endif // GEO_H
