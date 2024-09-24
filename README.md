@@ -34,3 +34,9 @@ in one way or another like the standard algorithm library, only collects some ge
 - implementation of gcd function template 
 - implementation of reducePoint function template which reduces a point to its gcd value
 - implementation of distance function template which return  the distance between 2 2D points using the Pythagorean formula. 
+
+#### Codility
+[Codility](https://app.codility.com/programmers/trainings/) is a platform of technical assessment.
+in the library the solution to all public tasks in the programmer training page. 
+all rights of concept of the execices is owned by Codility. 
+
