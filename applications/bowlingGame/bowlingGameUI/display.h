@@ -13,7 +13,6 @@
 #include <QLabel>
 
 #include<memory>
-
 namespace Ui {
     class Display;
 }
@@ -23,12 +22,12 @@ namespace Sandbox {
     }
 }
 
-class Display : public QMainWindow
+class DisplayF : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit Display(QWidget *parent = 0);
-    ~Display();
+    explicit DisplayF(QWidget *parent = 0);
+    ~DisplayF();
 private:
     void updateGrid();
     void throwPins();
@@ -58,5 +57,4 @@ private:
 private:
     std::unique_ptr<Sandbox::Gamebox::Bowlingbox> _game;
 };
-
 #endif // DISPLAY_H

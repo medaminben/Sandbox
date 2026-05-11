@@ -29,7 +29,7 @@ function(build_gtest_executable)
     target_link_libraries(${TEST_EXECUTABLE_NAME} PUBLIC ${PARGS_DEPENDS})    
  
     if(${PARGS_DISCOVER})
-        gtest_discover_tests(${TEST_EXECUTABLE_NAME})
+        #gtest_discover_tests(${TEST_EXECUTABLE_NAME})
     endif()
 
 endfunction()

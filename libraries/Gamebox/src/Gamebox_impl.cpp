@@ -1,6 +1,5 @@
 #include "Gamebox_impl.h"
-
-
+#include <vector> 
 /**
  * @brief Rolls a number of pins in the bowling game.
  * This function takes an integer representing the number of pins rolled and
@@ -99,7 +98,7 @@ int Sandbox::Gamebox::BowlingSet::validateRoll(const int & value) {
  * like None,Strike, Spare, Miss or Empty (see Status enum)
  * @return int* a pointer to an array of 21 integers
  */
-int *Sandbox::Gamebox::BowlingSet::rolls()  {
+std::vector<int> Sandbox::Gamebox::BowlingSet::rolls()  {
     static int out_rolls[21]; 
     int cur = 0, r = 0;
     for(; cur< 21;cur++, r++) {
@@ -148,7 +147,9 @@ int *Sandbox::Gamebox::BowlingSet::rolls()  {
         else 
             out_rolls[cur] = (int) Status::None;      
     }
-    return out_rolls; 
+    std::vector<int> rolls = {};
+    copy(&out_rolls[0], &out_rolls[21], std::back_inserter(rolls));
+    return rolls; 
 }
 
 /**
@@ -156,16 +157,18 @@ int *Sandbox::Gamebox::BowlingSet::rolls()  {
  * 
  * @return int*  a pointer to an array of 10 integers
  */
-int *Sandbox::Gamebox::BowlingSet::scores() 
+std::vector<int> Sandbox::Gamebox::BowlingSet::scores() 
 {
-    static int scores[10]; 
+    static unsigned scores[10]; 
     auto cur = manageCursor();
     for(int i = 0; i< 10; i++) {
         if (2*i < cur)
                 scores[i] = frameScore(i);
         else scores[i] = (int)Status::None; 
     }
-    return scores; 
+    std::vector<int> scores_out = {};
+    copy(&scores[0], &scores[10], std::back_inserter(scores_out));
+    return scores_out; 
 }
 
 /**

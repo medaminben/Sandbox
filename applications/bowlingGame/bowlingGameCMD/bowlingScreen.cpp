@@ -115,7 +115,7 @@ void Console::Screen::plotGrid(){
     // findout if an extra row is needed
     int rest        = (frameSize % units == 0) ? 0 : 1;
     // a stack is a alligned group of frames in the screen
-    int rows         =  (frameSize / units) + rest;
+    int rows        = (frameSize / units) + rest;
     // plot the frames    
     int frameIndex  = 0; // frame index
     ///load the frames to the rows
@@ -129,11 +129,11 @@ void Console::Screen::plotGrid(){
         auto lines  = std::vector<std::string>(frameHeight);
         //initialize the lines
         for(auto& line : lines) 
-                line    = std::string("");
+               line = std::string("");
         //load the frames line by line,       
         for(auto  j = 0; j < stop; j++) {
              for(auto k = 0; k < frameHeight; k++) 
-                lines[k] += spacer + _frames[frameIndex].getFrame()[k];
+               lines[k] += spacer + _frames[frameIndex].getFrame()[k];
             //increase the index to move to the next frame
             frameIndex++;
         }   
@@ -206,11 +206,9 @@ void Console::Screen::evaluate(){
                 else                // else keep running
                     setStatus(Status::Running);
             } 
-            else setStatus(Status::Typo);
-            
+            else setStatus(Status::Typo);  
         } 
-        else setStatus(Status::Typo);
-            
+        else setStatus(Status::Typo);     
     } 
     else setStatus(Status::TryStart); 
 }
@@ -270,7 +268,7 @@ bool Console::Screen::clearScreen(){
 #ifdef _WIN32
         // Clear the console screen
         system("cls"); // For Windows
-#elif 
+#else
         // Clear the console screen
         system("clear"); // For Linux/Mac
 #endif// WIN32
@@ -342,7 +340,7 @@ void Console::Frame::updateRolls(){
     std::string leftEdge   =  "| ", 
                 rightEdge  = " |", 
                 middleEdge = " | ";
-    // reset the frame line with fiest roll first
+    // reset the frame line with first roll first
     _frame[1] = leftEdge + _firstRoll;
     // prepare the right side of the frame by the second roll
     auto rightSide  = middleEdge + _secondRoll;

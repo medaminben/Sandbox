@@ -7,7 +7,7 @@
 // Include std headers
 #ifdef _WIN32
 #include <windows.h>
-#elif
+#else
 #include <sys/ioctl.h>
 #endif
 #include <unistd.h>

@@ -75,12 +75,12 @@ namespace Sandbox { namespace Codility {
     int OddOccurencyInArray(std::vector<int> &A){
         std::unordered_set<int> result{};
         for(auto item : A) 
-            if (result.contains(item)) 
+            if (result.find(item) != result.end())
                 result.erase(item);
             else 
                 result.insert(item); 
         for(auto item : A) 
-            if (result.contains(item)) return item;
+            if (result.find(item) != result.end())return item;
         return -1;
     }
 
@@ -139,7 +139,7 @@ namespace Sandbox { namespace Codility {
         for(int i = 1; i <= X ;i++) st.emplace(i);
 
         for(size_t i = 0; i < A.size() ;i++) 
-            if( st.contains(A[i])) {
+            if( st.find(A[i]) != st.end()) {
                 st.erase(A[i]);
                 if( st.empty()) return i; 
             } 
@@ -282,8 +282,8 @@ namespace Sandbox { namespace Codility {
         5- optemization: observation, the minimal average have to be at least in one of the smallest possible slice
            which lead us to the smallest way to slice and cover all possibility (odd and even). it's faster too scan just the slices of width 2 and 3. 
         */
-        float min_avg_all = INT_MAX;
-        float current_avg = INT_MAX;
+        float min_avg_all = std::numeric_limits<int>::max();
+        float current_avg = std::numeric_limits<int>::max();
         size_t min_avg_pos = 0L;
         int    prefix_sum  = 0;
         
@@ -528,7 +528,7 @@ namespace Sandbox { namespace Codility {
         std::unordered_map<int,int> mp{};
 
         for(size_t i = 0; i < A.size();i++) {
-            if(mp.contains(A[i])) { 
+            if (mp.find(A[i]) != mp.end()) { 
                 if(++mp[A[i]] > (int)A.size()/2) return i;
             } else mp.emplace(A[i],1);
         }
@@ -542,7 +542,7 @@ namespace Sandbox { namespace Codility {
         ///////////////////////////////////////////
         // find the Dominator
         for(size_t i = 0; i < A.size();i++) {
-            if(mp.contains(A[i])) { 
+            if (mp.find(A[i]) != mp.end())  { 
                 if(++mp[A[i]] > (int)A.size()/2) {
                     leader = A[i];
                     leader_count = mp[A[i]];
@@ -596,7 +596,7 @@ namespace Sandbox { namespace Codility {
 
     // https://app.codility.com/programmers/lessons/9-maximum_slice_problem/max_slice_sum/
     int MaxSliceSum(std::vector<int> &A) {
-        long sum{INT_MIN}, maxSum{INT_MIN};
+        long sum{std::numeric_limits<int>::min()}, maxSum{std::numeric_limits<int>::min()};
         for(auto const& a : A) {
             sum    = std::max(sum + a, (long)a);
             maxSum = std::max(sum, maxSum);
@@ -648,7 +648,7 @@ namespace Sandbox { namespace Codility {
 
     // https://app.codility.com/programmers/lessons/10-prime_and_composite_numbers/min_perimeter_rectangle/
     int MinPerimeterRectangle(int N)  {
-        int min_perim{INT_MAX}; 
+        int min_perim{std::numeric_limits<int>::max()}; 
         int stepper{};
         while(++stepper < N / 2) 
             if(N % stepper == 0) 
@@ -1052,7 +1052,7 @@ namespace Sandbox { namespace Codility {
         std::unordered_set<int> st{};
         int counter{0};
         for(auto a : A)
-            if(!st.contains(std::abs(a))) {
+            if(!(st.find(std::abs(a)) != st.end())) {
                 st.emplace(std::abs(a));
                 counter++;
             }
@@ -1070,7 +1070,7 @@ namespace Sandbox { namespace Codility {
         while(size > front_pointer  
            || size > back_pointer) {
 
-            if(size > front_pointer && !st.contains(A[front_pointer])) {
+            if(size > front_pointer && !(st.find(A[front_pointer]) != st.end())) {
                 st.emplace(A[front_pointer]);
                 front_pointer++;
                 counter += st.size();
@@ -1117,7 +1117,7 @@ namespace Sandbox { namespace Codility {
         // define the start and end index pointers
         int start_index{0};
         int end_index = A.size()-1;
-        int minimal_absolute_sum{INT_MAX};
+        int minimal_absolute_sum{std::numeric_limits<int>::max()};
         // scan the vector until the pointers overlap
         while(start_index < end_index) {
             // calculate the abs sum of the pointers and save it if minimal
@@ -1181,7 +1181,7 @@ namespace Sandbox { namespace Codility {
     // https://app.codility.com/programmers/lessons/17-dynamic_programming/number_solitaire/
     int NumberSolitaire(std::vector<int> &A) {
        // create a memo vector to ttrack the score
-        std::vector<int> note(A.size(),INT_MIN+1); // +1 to avoid the undefined behaviour with min int
+        std::vector<int> note(A.size(),std::numeric_limits<int>::min() +1); // +1 to avoid the undefined behaviour with min int
         // isolate corner case index 0 
         note[0] = A[0];
         // roll the dice

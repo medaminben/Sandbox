@@ -34,7 +34,7 @@ namespace {
 }
 
 
-Display::Display(QWidget *parent) :
+DisplayF::DisplayF(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Display)
 {
@@ -45,19 +45,19 @@ Display::Display(QWidget *parent) :
     refresh();
 }
 
-Display::~Display()
+DisplayF::~DisplayF()
 {
     delete ui;
 }
 
-void Display::roll(const int& pins) {
+void DisplayF::roll(const int& pins) {
     _game->roll(pins);
     refresh();
 }
 //######################################################
 //Gui Updaters
 
-void Display::updateGrid() {
+void DisplayF::updateGrid() {
 
     auto rolls     = _game->rolls();
     auto scores    = _game->scores();
@@ -86,7 +86,7 @@ void Display::updateGrid() {
 
 }
 
-void Display::throwPins() {
+void DisplayF::throwPins() {
     if(_game->isOver()) {
         for (auto pins : pinsList)
             pins->show();
@@ -106,7 +106,7 @@ void Display::throwPins() {
 
 //#######################################################
 //Helpers
-void Display::organizeLists()
+void DisplayF::organizeLists()
 {
     //bind the pins buttons with a list to ease the control and iteration
     pinsList.append(ui->btn_0); pinsList.append(ui->btn_1); pinsList.append(ui->btn_2);
@@ -136,7 +136,7 @@ void Display::organizeLists()
 
 }
 
-void Display::refresh()
+void DisplayF::refresh()
 {
     updateGrid();
     throwPins();
@@ -144,62 +144,62 @@ void Display::refresh()
 
 //#######################################################
 //Buttons Signals
-void Display::on_btn_0_clicked()
+void DisplayF::on_btn_0_clicked()
 {
     roll(0);
 }
 
-void Display::on_btn_1_clicked()
+void DisplayF::on_btn_1_clicked()
 {
     roll(1);
 }
 
-void Display::on_btn_2_clicked()
+void DisplayF::on_btn_2_clicked()
 {
     roll(2);
 }
 
-void Display::on_btn_3_clicked()
+void DisplayF::on_btn_3_clicked()
 {
     roll(3);
 }
 
-void Display::on_btn_4_clicked()
+void DisplayF::on_btn_4_clicked()
 {
     roll(4);
 }
 
-void Display::on_btn_5_clicked()
+void DisplayF::on_btn_5_clicked()
 {
     roll(5);
 }
 
-void Display::on_btn_6_clicked()
+void DisplayF::on_btn_6_clicked()
 {
     roll(6);
 }
 
-void Display::on_btn_7_clicked()
+void DisplayF::on_btn_7_clicked()
 {
     roll(7);
 }
 
-void Display::on_btn_8_clicked()
+void DisplayF::on_btn_8_clicked()
 {
     roll(8);
 }
 
-void Display::on_btn_9_clicked()
+void DisplayF::on_btn_9_clicked()
 {
     roll(9);
 }
 
-void Display::on_btn_10_clicked()
+void DisplayF::on_btn_10_clicked()
 {
     roll(10);
 }
 
-void Display::on_btn_restart_clicked()
+void DisplayF::on_btn_restart_clicked()
 {
     _game->reset();
     refresh();

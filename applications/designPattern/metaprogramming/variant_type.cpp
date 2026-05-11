@@ -154,7 +154,7 @@ void test_variant_metadata() {
 };
 void test_variant_output() {
     std::cout << "["  << SIGNATURE << "]" << "\n";
-    std::variant<std::monostate,int,std::string> a_variant(10L);
+    std::variant<std::monostate,int,std::string> a_variant(10);
     std::cout << "the content of a is " << a_variant << "\n";
     a_variant = "just a string";
     std::cout << "the content now is "  << a_variant << "\n";

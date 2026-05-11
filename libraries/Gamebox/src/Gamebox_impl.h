@@ -1,6 +1,6 @@
 #ifndef GAMEBOX_IMPL_H
 #define GAMEBOX_IMPL_H
-
+#include <vector> 
 namespace Sandbox { namespace Gamebox {
     enum class  Status {
         Empty  = -4,
@@ -14,8 +14,8 @@ namespace Sandbox { namespace Gamebox {
         bool roll(const int&);
         void reset();
         //getters
-        int* rolls();
-        int* scores();
+        std::vector<int>  rolls();
+        std::vector<int>  scores();
         int  pinsLeft();
         int  score();
         bool isOver();

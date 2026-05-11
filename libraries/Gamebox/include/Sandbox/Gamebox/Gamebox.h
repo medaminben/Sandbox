@@ -2,6 +2,7 @@
 #define GAMEBOX_H
 #include "Sandbox_Gamebox_export.h"
 #include <memory>
+#include <vector> 
 struct BowlingSet;
 namespace Sandbox { namespace Gamebox {
         
@@ -12,8 +13,8 @@ namespace Sandbox { namespace Gamebox {
         public:
             void SANDBOX_GAMEBOX_API roll(const int&);
             int  SANDBOX_GAMEBOX_API score();
-            int* SANDBOX_GAMEBOX_API rolls();
-            int* SANDBOX_GAMEBOX_API scores();
+            std::vector<int> SANDBOX_GAMEBOX_API rolls();
+            std::vector<int> SANDBOX_GAMEBOX_API scores();
             int  SANDBOX_GAMEBOX_API pinsLeft();
             int  SANDBOX_GAMEBOX_API getFrameScore(const int&);
             void SANDBOX_GAMEBOX_API reset();

@@ -41,11 +41,11 @@ int Sandbox::Gamebox::Bowlingbox::score(){
     return _gameSet->score();
 }
     
-int* Sandbox::Gamebox::Bowlingbox::rolls() {
+std::vector<int> Sandbox::Gamebox::Bowlingbox::rolls() {
     return _gameSet->rolls();
 }
 
-int* Sandbox::Gamebox::Bowlingbox::scores(){
+std::vector<int> Sandbox::Gamebox::Bowlingbox::scores(){
     return _gameSet->scores();
 }
 
