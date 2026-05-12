@@ -7,7 +7,10 @@ add_subdirectory(CommandPattern)
 add_subdirectory(StatePattern)
 add_subdirectory(ObserverPattern)
 add_subdirectory(mvc)
-add_subdirectory(metaprogramming)
+
+if(BUILD_METAPROGRAMMING)
+    add_subdirectory(metaprogramming)
+endif(BUILD_METAPROGRAMMING)
 #################################################
 # Build all the subprojects
 #################################################

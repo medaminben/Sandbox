@@ -10,10 +10,13 @@ set(CMAKE_ROOT_NAME ${PROJECT_NAME})
 # library has to be rebuilt.
 # This option is the standard option
 option(BUILD_SHARED_LIBS     "Build project libraries as shared libraries" ON) 
-option(BUILD_APPS            "Build applications" ON)
-option(BUILD_QT_UI           "Build Qt based applications" ON)
-option(BUILD_VERBOSE_OUTPUT  "Build with verbose output" ON)  
-option(BUILD_TESTING         "Build tests" ON)  
+option(BUILD_APPS            "Build applications"                          ON)
+option(BUILD_DESIGN          "Build Design pattern related apps"           ON)
+option(BUILD_METAPROGRAMMING "Build meta programming related topics"       ON)
+option(BUILD_QT_UI           "Build Qt based applications"                 ON)
+option(BUILD_VERBOSE_OUTPUT  "Build with verbose output"                   ON)  
+option(BUILD_TESTING         "Build tests"                                 ON) 
+option(BUILD_BOOST_3RD       "Build boost based libs and apps"             ON) 
 
 
 # Let include() find modules with out an explicit directory 
