@@ -41,3 +41,32 @@ in the library the solution to all public tasks in the programmer training page.
 all rights of concept of the execices is owned by Codility. 
 go straight to the implementation file of the solution [here](https://github.com/medaminben/Sandbox/blob/master/libraries/Codility/src/Codility_impl.cpp) 
 
+#### Gamebox
+Destinated for "Kata's" implementation:
+##### Bowling Game Challenge
+implemented as TDD and exported as 2 types of interfaces, Console and UI window using QT as grafical framework
+
+
+This console game is an interface to the bowling game implemented under the Gamebox library.
+=About=
+ Made by: github.com/medaminben
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ .-----------. .-----------. .-----------. .-----------. .-----------.
+ |  -  |     | |     |     | |     |     | |     |     | |     |     |
+ |     '-----| |     '-----| |     '-----| |     '-----| |     '-----|
+ |           | |           | |           | |           | |           |
+ '-----------' '-----------' '-----------' '-----------' '-----------'
+ .-----------. .-----------. .-----------. .-----------. .-----------------.
+ |     |     | |     |     | |     |     | |     |     | |     |     |     |
+ |     '-----| |     '-----| |     '-----| |     '-----| |     '-----'-----|
+ |           | |           | |           | |           | |                 |
+ '-----------' '-----------' '-----------' '-----------' '-----------------'
+Welcome to the Bowling Game!
+Select a choice:
+ q - quit p - play to continue...
+
+
+
+
+
