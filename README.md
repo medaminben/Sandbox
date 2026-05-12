@@ -47,10 +47,11 @@ Destinated for "Kata's" implementation:
 implemented as TDD and exported as 2 types of interfaces, Console and UI window using QT as grafical framework
 
 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This console game is an interface to the bowling game implemented under the Gamebox library.
 =About=
  Made by: github.com/medaminben
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  .-----------. .-----------. .-----------. .-----------. .-----------.
  |  -  |     | |     |     | |     |     | |     |     | |     |     |
