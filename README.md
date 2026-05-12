@@ -1,3 +1,4 @@
+
 # Sandbox
 a practice repo based on [project-unit](https://github.com/medaminben/project-unit) repository
 
@@ -46,7 +47,7 @@ Destinated for "Kata's" implementation:
 ##### Bowling Game Challenge
 implemented as TDD and exported as 2 types of interfaces, Console and UI window using QT as grafical framework
 
-
+<img width="1332" height="359" alt="Bildschirmfoto_20260513_014107" src="https://github.com/user-attachments/assets/17d385c7-a68f-450d-b9f2-8c7e27cb34ef" />
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This console game is an interface to the bowling game implemented under the Gamebox library.
