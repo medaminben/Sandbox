@@ -1,9 +1,8 @@
 include(FetchContent)
 # clone gtest build and install it 
-FetchContent_Declare(
+fetchcontent_declare(
   googletest
   GIT_REPOSITORY https://github.com/google/googletest.git
   GIT_TAG main
 )
-FetchContent_Makeavailable(googletest)
-#include(googletest)
+fetchcontent_makeavailable(googletest)
