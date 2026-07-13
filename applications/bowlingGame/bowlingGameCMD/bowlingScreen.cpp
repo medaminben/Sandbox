@@ -267,10 +267,10 @@ int Console::Screen::getConsoleWidth(){
 bool Console::Screen::clearScreen(){
 #ifdef _WIN32
         // Clear the console screen
-        system("cls"); // For Windows
+        (void)system("cls"); // For Windows
 #else
         // Clear the console screen
-        system("clear"); // For Linux/Mac
+        (void)system("clear"); // For Linux/Mac
 #endif// WIN32
         return true;
 }
