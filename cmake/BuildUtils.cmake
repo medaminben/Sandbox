@@ -126,7 +126,7 @@ function(create_library)
         # Test executable names must start with "test_" 
         # and be lowercase
         set(TEST_NAME test_${LIBRARY_NAME_RAW})
-        set(GTEST_DEPENDENCIES gtest gmock_main gmock)
+        set(GTEST_DEPENDENCIES GTest::gmock_main GTest::gtest)
         # usage: 
         # include("TestUtils")
         # add_gtest_executable(test_library_name

@@ -266,13 +266,10 @@ int Console::Screen::getConsoleWidth(){
 }
 bool Console::Screen::clearScreen(){
 #ifdef _WIN32
-        // Clear the console screen
-        system("cls"); // For Windows
+        return system("cls") != -1; // For Windows
 #else
-        // Clear the console screen
-        system("clear"); // For Linux/Mac
+        return system("clear") != -1; // For Linux/Mac
 #endif// WIN32
-        return true;
 }
 // ### Status getters
 bool Console::Screen::isEndGame(){

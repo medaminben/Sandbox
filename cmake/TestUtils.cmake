@@ -29,7 +29,15 @@ function(build_gtest_executable)
     target_link_libraries(${TEST_EXECUTABLE_NAME} PUBLIC ${PARGS_DEPENDS})    
  
     if(${PARGS_DISCOVER})
-        #gtest_discover_tests(${TEST_EXECUTABLE_NAME})
+        include(GoogleTest)
+        gtest_discover_tests(${TEST_EXECUTABLE_NAME}
+            WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        )
+    else()
+        add_test(NAME ${TEST_EXECUTABLE_NAME} COMMAND ${TEST_EXECUTABLE_NAME})
+        set_tests_properties(${TEST_EXECUTABLE_NAME} PROPERTIES
+            WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        )
     endif()
 
 endfunction()
