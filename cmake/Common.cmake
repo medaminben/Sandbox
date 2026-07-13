@@ -46,7 +46,7 @@ else()
 endif()
 
 if(BUILD_TESTING)
-    print(BUILD_TESTING)
+    message(STATUS "BUILD_TESTING: ${BUILD_TESTING}")
     include(CTest)
     enable_testing()
     include(TestUtils)

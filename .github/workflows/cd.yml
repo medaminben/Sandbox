@@ -1,0 +1,67 @@
+name: CD
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+env:
+  BUILD_DIR: build
+
+jobs:
+  release:
+    name: Build release artifacts
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential \
+            ninja-build \
+            cmake \
+            qt6-base-dev \
+            qt6-tools-dev \
+            libgl1-mesa-dev \
+            libboost-dev
+
+      - name: Configure
+        run: |
+          cmake -B ${{ env.BUILD_DIR }} -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_VERBOSE_OUTPUT=OFF \
+            -DBUILD_APPS=ON \
+            -DBUILD_QT_UI=ON \
+            -DBUILD_BOOST_3RD=ON \
+            -DBUILD_DESIGN=ON \
+            -DBUILD_TESTING=ON
+
+      - name: Build
+        run: cmake --build ${{ env.BUILD_DIR }} --parallel
+
+      - name: Run tests
+        run: ctest --test-dir ${{ env.BUILD_DIR }} --output-on-failure --parallel
+
+      - name: Package artifacts
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          ARCHIVE="sandbox-${VERSION}-linux-x86_64"
+          mkdir -p "dist/${ARCHIVE}/bin"
+          mkdir -p "dist/${ARCHIVE}/lib"
+          cp -r "${{ env.BUILD_DIR }}/bin/"* "dist/${ARCHIVE}/bin/" 2>/dev/null || true
+          cp -r "${{ env.BUILD_DIR }}/lib/"*.so* "dist/${ARCHIVE}/lib/" 2>/dev/null || true
+          tar -czf "dist/${ARCHIVE}.tar.gz" -C dist "${ARCHIVE}"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.tar.gz
+          generate_release_notes: true
