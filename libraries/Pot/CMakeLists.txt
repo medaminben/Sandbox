@@ -48,7 +48,7 @@ if(BUILD_TESTING)
     set(TEST_DEPENDENCIES
     )
     set(TEST_NAME "test_${LIBRARY_NAME_RAW}")
-    set(GTEST_DEPENDENCIES gtest gmock_main gmock)
+    set(GTEST_DEPENDENCIES GTest::gmock_main GTest::gtest)
     
     build_gtest_executable(
        ${TEST_NAME} 
